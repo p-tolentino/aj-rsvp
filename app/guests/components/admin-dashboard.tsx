@@ -43,7 +43,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+    if (password === process.env.ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setError("");
       // localStorage convenience
