@@ -4,7 +4,7 @@ import { PiDress as Dress } from "react-icons/pi";
 
 export default function Attire() {
   return (
-    <div id="dresscode" className="max-w-4xl mx-auto">
+    <div id="attire" className="max-w-4xl mx-auto">
       <h2 className="text-3xl font-serif font-semibold mb-8 text-center text-secondary">
         Attire
       </h2>
