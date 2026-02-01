@@ -38,7 +38,7 @@ export default function Countdown() {
       <h2 className="text-3xl font-serif font-semibold mb-8 text-center text-background">
         Counting Down to Our Special Day
       </h2>
-      <Card className="border-primary/20 bg-card-frosted">
+      <Card className="border-primary/20 bg-white/60">
         <CardContent className="p-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(timeLeft).map(([unit, value]) => (
