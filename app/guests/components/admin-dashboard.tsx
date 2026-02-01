@@ -43,7 +43,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password === process.env.ADMIN_PASSWORD) {
+    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setError("");
       // localStorage convenience
@@ -70,7 +70,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
   useEffect(() => {
     calculateStats(rsvps || []);
-  }, [rsvps]);
+  }, []);
 
   const calculateStats = (data: RSVP[]) => {
     const attending = data.filter((r) => r.attendance === "attending");
@@ -179,7 +179,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                 </div>
 
                 <Button
-                  type="submit"
+                  onClick={(e) => handleLogin(e)}
                   className="w-full bg-primary hover:bg-primary/90"
                   size="lg"
                 >
