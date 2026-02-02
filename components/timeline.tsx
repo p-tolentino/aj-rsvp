@@ -47,8 +47,8 @@ export default function Timeline() {
     <div id="timeline" className="max-w-4xl mx-auto">
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 mb-4">
-          <Clock className="h-6 w-6 text-primary" />
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-secondary">
+          <Clock className="h-6 w-6 md:h-10 md:w-10 text-primary" />
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-secondary">
             Wedding Day Timeline
           </h2>
         </div>

@@ -35,7 +35,7 @@ export default async function Home() {
         <Card className="border-primary/20 bg-gradient-to-br from-accent/30 to-background">
           <CardContent className="pt-6">
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl font-serif font-semibold mb-4 text-secondary">
+              <h2 className="text-4xl md:text-5xl font-serif font-semibold mb-4 text-secondary">
                 Wedding Gifts
               </h2>
               <p className="text-muted-foreground mb-6">

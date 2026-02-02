@@ -137,8 +137,8 @@ export default function VenuesGuide() {
           className="text-center mb-12"
         >
           <div className="inline-flex items-center gap-2 mb-4">
-            <MapPin className="h-6 w-6 text-primary" />
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold text-foreground">
+            <MapPin className="h-6 w-6 md:h-10 md:w-10 text-primary" />
+            <h2 className="text-4xl md:text-5xl font-serif font-semibold text-foreground">
               Local Guide
             </h2>
           </div>

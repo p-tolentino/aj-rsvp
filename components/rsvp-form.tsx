@@ -33,6 +33,8 @@ export default function RSVPForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showGuestsSection, setShowGuestsSection] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const form = useForm<RSVPFormData>({
     resolver: zodResolver(RSVPFormSchema),
@@ -46,6 +48,24 @@ export default function RSVPForm() {
   });
 
   const attendance = form.watch("attendance");
+
+  const handleAttendanceChange = (value: string) => {
+    if (value === "attending") {
+      if (!showGuestsSection) {
+        setIsAnimating(true);
+        setShowGuestsSection(true);
+        setTimeout(() => setIsAnimating(false), 300);
+      }
+    } else {
+      if (showGuestsSection) {
+        setIsAnimating(true);
+        setShowGuestsSection(false);
+        setTimeout(() => setIsAnimating(false), 300);
+      }
+      form.setValue("guests", 1);
+    }
+    form.setValue("attendance", value as "attending" | "not-attending");
+  };
 
   const onSubmit = async (data: RSVPFormData) => {
     setIsSubmitting(true);
@@ -143,7 +163,7 @@ export default function RSVPForm() {
         <CardContent className="pb-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Full Name Field */}
+              {/* Full Name */}
               <FormField
                 control={form.control}
                 name="full_name"
@@ -168,7 +188,7 @@ export default function RSVPForm() {
                 )}
               />
 
-              {/* Email Field */}
+              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -195,7 +215,7 @@ export default function RSVPForm() {
                 )}
               />
 
-              {/* Attendance Field */}
+              {/* Attendance */}
               <FormField
                 control={form.control}
                 name="attendance"
@@ -207,7 +227,7 @@ export default function RSVPForm() {
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
-                        onValueChange={field.onChange}
+                        onValueChange={handleAttendanceChange}
                         value={field.value}
                         className="flex flex-col sm:flex-row gap-4"
                         disabled={isSubmitting}
@@ -245,57 +265,72 @@ export default function RSVPForm() {
                 )}
               />
 
-              {/* Guests Field (only show if attending) */}
-              {attendance === "attending" && (
-                <FormField
-                  control={form.control}
-                  name="guests"
-                  render={({ field }) => (
-                    <FormItem className="space-y-4">
-                      <FormLabel className="text-secondary text-base">
-                        Number of Guests <span className="text-red-500">*</span>{" "}
-                        <span className="italic text-xs text-gray-400">
-                          (including you)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={(value) =>
-                            field.onChange(Number(value))
-                          }
-                          value={field.value.toString()}
-                          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
-                          disabled={isSubmitting}
-                        >
-                          {[1, 2].map((num) => (
-                            <div key={num} className="relative">
-                              <RadioGroupItem
-                                value={num.toString()}
-                                id={`guests-${num}`}
-                                className="peer sr-only"
-                              />
-                              <Label
-                                htmlFor={`guests-${num}`}
-                                className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:hover:text-primary cursor-pointer transition-all"
-                              >
-                                <span className="text-2xl font-bold">
-                                  {num}
-                                </span>
-                                <span className="text-sm">
-                                  {num === 1 ? "Person" : "People"}
-                                </span>
-                              </Label>
-                            </div>
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+              {/* Guests */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  showGuestsSection
+                    ? "max-h-[200px] opacity-100"
+                    : "max-h-0 opacity-0"
+                } ${isAnimating ? "pointer-events-none" : ""}`}
+              >
+                <div
+                  className={`transform transition-all duration-300 ease-in-out ${
+                    showGuestsSection
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-4 opacity-0"
+                  }`}
+                >
+                  <FormField
+                    control={form.control}
+                    name="guests"
+                    render={({ field }) => (
+                      <FormItem className="space-y-4">
+                        <FormLabel className="text-secondary text-base">
+                          Number of Guests{" "}
+                          <span className="text-red-500">*</span>{" "}
+                          <span className="italic text-xs text-gray-400">
+                            (including you)
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={(value) =>
+                              field.onChange(Number(value))
+                            }
+                            value={field.value.toString()}
+                            className="grid grid-cols-2 sm:grid-cols-3 gap-3"
+                            disabled={isSubmitting}
+                          >
+                            {[1, 2].map((num) => (
+                              <div key={num} className="relative">
+                                <RadioGroupItem
+                                  value={num.toString()}
+                                  id={`guests-${num}`}
+                                  className="peer sr-only"
+                                />
+                                <Label
+                                  htmlFor={`guests-${num}`}
+                                  className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-background p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:hover:text-primary cursor-pointer transition-all"
+                                >
+                                  <span className="text-2xl font-bold">
+                                    {num}
+                                  </span>
+                                  <span className="text-sm">
+                                    {num === 1 ? "Person" : "People"}
+                                  </span>
+                                </Label>
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
-              {/* Message Field */}
+              {/* Message */}
               <FormField
                 control={form.control}
                 name="message"
