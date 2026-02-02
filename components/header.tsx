@@ -158,16 +158,16 @@ export default function Header() {
                   Timeline
                 </Link>
                 <Link
-                  href={{ pathname: "/", hash: "#dresscode" }}
+                  href={{ pathname: "/", hash: "#attire" }}
                   onClick={(e) => {
                     if (pathname === "/") {
-                      handleLinkClick(e, "#dresscode");
+                      handleLinkClick(e, "#attire");
                     }
                     closeMenu();
                   }}
                   className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
                 >
-                  Dress Code
+                  Attire
                 </Link>
                 <Link
                   href={{ pathname: "/", hash: "#rsvp" }}

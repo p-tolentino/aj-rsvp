@@ -108,7 +108,6 @@ export default function MemoryScrapbook() {
           ))}
         </div>
 
-        {/* Handwritten note */}
         <div className="max-w-2xl mx-auto mt-12 relative">
           <div className="tape-effect"></div>
           <div className="bg-white/95 p-6 rounded-xl border-2 border-primary/20 shadow-lg">

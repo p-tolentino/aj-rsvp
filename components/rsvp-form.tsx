@@ -133,7 +133,7 @@ export default function RSVPForm() {
             <CardTitle className="text-2xl md:text-3xl font-serif font-semibold text-secondary">
               Confirm Your Attendance
             </CardTitle>
-            <CardDescription className="text-base md:text-lg flex flex-col text-nowrap">
+            <CardDescription className="text-base md:text-lg flex flex-col  ">
               To help us prepare thoughtfully, please RSVP on or before{" "}
               <span className="font-bold text-primary">March 20, 2026</span>
             </CardDescription>
@@ -327,7 +327,6 @@ export default function RSVPForm() {
                 )}
               />
 
-              {/* Important Note */}
               <div className="bg-card-gradient p-4 md:p-6 rounded-lg border border-primary/20">
                 <div className="flex items-start gap-3">
                   <div>
@@ -340,7 +339,6 @@ export default function RSVPForm() {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full bg-primary hover:bg-primary/90 text-lg py-6 md:py-8 group relative overflow-hidden"

@@ -102,7 +102,6 @@ export default function PlaylistSectionSimple() {
               </div>
 
               <div className="h-[380px] relative">
-                {/* Simple loading indicator */}
                 {!loadedIndexes.has(index) && (
                   <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
                     <div className="text-center">
@@ -157,7 +156,6 @@ export default function PlaylistSectionSimple() {
               </div>
 
               <div className="h-[380px] relative">
-                {/* Simple loading indicator */}
                 {!loadedIndexes.has(index) && (
                   <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
                     <div className="text-center">
@@ -187,59 +185,6 @@ export default function PlaylistSectionSimple() {
           </Card>
         ))}
       </div>
-      {/* Mobile grid*/}
-      {/* <div className="block md:hidden mt-8">
-        <div className="overflow-x-auto pb-4 -mx-4 px-4">
-          <div
-            className="flex gap-4"
-            style={{ width: `${playlists.length * 320}px` }}
-          >
-            {playlists.map((playlist, index) => (
-              <Card
-                key={playlist.id}
-                className="border-primary/20 w-[300px] flex-shrink-0"
-              >
-                <CardContent className="p-4">
-                  <div className="mb-4">
-                    <div className="text-sm font-medium text-primary mb-1">
-                      {`0${index + 1}`}
-                    </div>
-                    <h3 className="text-lg font-serif font-semibold text-secondary mb-2">
-                      {playlist.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {playlist.description}
-                    </p>
-                  </div>
-                  <div className="aspect-square relative">
-                    {!loadedIndexes.has(index) && (
-                      <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded">
-                        <div className="text-center">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-1"></div>
-                          <p className="text-xs text-gray-500">Loading...</p>
-                        </div>
-                      </div>
-                    )}
-                    <iframe
-                      src={playlist.url}
-                      width="100%"
-                      height="100%"
-                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                      loading="lazy"
-                      title={playlist.title}
-                      onLoad={() => handleIframeLoad(index)}
-                      style={{
-                        opacity: loadedIndexes.has(index) ? 1 : 0,
-                        transition: "opacity 0.3s",
-                      }}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }

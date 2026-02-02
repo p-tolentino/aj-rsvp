@@ -139,10 +139,10 @@ export default function VenuesGuide() {
           <div className="inline-flex items-center gap-2 mb-4">
             <MapPin className="h-6 w-6 text-primary" />
             <h2 className="text-3xl md:text-4xl font-serif font-semibold text-foreground">
-              Local <span className="handwritten text-primary">Guide</span>
+              Local Guide
             </h2>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-nowrap">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto md:text-nowrap">
             Our favorite spots in Alabang for your visit. Make the most of your
             time in the city!
           </p>
@@ -159,7 +159,6 @@ export default function VenuesGuide() {
                 transition={{ delay: catIndex * 0.2 }}
                 className="space-y-8"
               >
-                {/* Category Header */}
                 <div className="flex items-center gap-4">
                   <div
                     className={`p-3 rounded-lg ${category.bgColor} border ${category.color}`}
@@ -174,7 +173,6 @@ export default function VenuesGuide() {
                   </div>
                 </div>
 
-                {/* Items Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {category.items.map((item, itemIndex) => {
                     const ItemIcon = item.icon;
@@ -195,11 +193,9 @@ export default function VenuesGuide() {
                           style={{ transform: `rotate(${item.rotation}deg)` }}
                         >
                           <CardContent className="p-0 h-full flex flex-col">
-                            {/* Polaroid-style */}
                             <div
                               className={`relative h-40 ${item.imageColor} overflow-hidden`}
                             >
-                              {/* Location Image */}
                               <div
                                 className={`absolute inset-0 -z-50 flex flex-col items-center justify-center p-4 bg-cover bg-center`}
                                 style={{
@@ -210,7 +206,6 @@ export default function VenuesGuide() {
                               ></div>
                             </div>
 
-                            {/* Special badge for highlighted items */}
                             {item.highlight && (
                               <div className="absolute top-3 left-3">
                                 <div className="flex items-center gap-1 px-2 py-1 bg-background/20 backdrop-blur-sm rounded-full">
@@ -222,7 +217,6 @@ export default function VenuesGuide() {
                               </div>
                             )}
 
-                            {/* Content section */}
                             <div className="p-6 flex-1 flex flex-col">
                               <div className="mb-4">
                                 <h3 className="text-xl font-serif font-semibold text-foreground mb-2 flex items-center gap-2">

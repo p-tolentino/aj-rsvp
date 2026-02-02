@@ -210,7 +210,6 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-background p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -248,7 +247,6 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white">
             <CardContent className="p-6">
@@ -293,7 +291,6 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </Card>
         </div>
 
-        {/* Main Content */}
         <Tabs defaultValue="all" className="space-y-6">
           <TabsList className="grid w-full md:w-auto grid-cols-3 md:inline-flex">
             <TabsTrigger value="all">All Guests ({rsvps.length})</TabsTrigger>
@@ -346,7 +343,6 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </TabsContent>
         </Tabs>
 
-        {/* Summary Section */}
         <Card className="mt-8 border-blue-100">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

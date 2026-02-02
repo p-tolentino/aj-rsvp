@@ -95,9 +95,9 @@ export default function Footer() {
               <li>
                 <FooterLink href="#timeline">Timeline</FooterLink>
               </li>
-              <li>
-                {/* <FooterLink href="#entourage">Entourage</FooterLink> */}
-              </li>
+              {/* <li>
+                <FooterLink href="#entourage">Entourage</FooterLink>
+              </li> */}
               <li>
                 <FooterLink href="#attire">Attire</FooterLink>
               </li>

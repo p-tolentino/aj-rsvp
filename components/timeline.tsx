@@ -100,7 +100,6 @@ export default function Timeline() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="space-y-3">
                   {/* Time */}
                   <div className="flex items-center gap-3">
@@ -168,7 +167,6 @@ export default function Timeline() {
             ))}
           </div>
 
-          {/* Special Note */}
           <div className="mt-12 p-6 rounded-xl bg-secondary/5 border border-primary/20">
             <div className="flex items-start gap-4">
               <div className="p-2 rounded-lg bg-primary/10">
