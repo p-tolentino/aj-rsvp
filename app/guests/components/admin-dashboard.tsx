@@ -230,11 +230,11 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             <div className="animate-fade-in">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl md:text-4xl font-serif font-bold text-secondary">
-                  Wedding RSVP Dashboard
+                  Wedding RSVP Responses
                 </h1>
               </div>
               <p className="text-gray-600">
-                Manage and view all guest responses and analytics
+                Manage and view all guest responses
               </p>
             </div>
             <div className="animate-fade-in">
