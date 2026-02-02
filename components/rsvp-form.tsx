@@ -135,7 +135,7 @@ export default function RSVPForm() {
             </CardTitle>
             <CardDescription className="text-base md:text-lg flex flex-col text-nowrap">
               To help us prepare thoughtfully, please RSVP on or before{" "}
-              <span className="font-bold text-primary">March 1, 2026</span>
+              <span className="font-bold text-primary">March 20, 2026</span>
             </CardDescription>
           </div>
         </CardHeader>

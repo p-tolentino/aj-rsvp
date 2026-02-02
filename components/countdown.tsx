@@ -54,7 +54,7 @@ export default function Countdown() {
           </div>
           <p className="text-center text-secondary/70 mt-8">
             Kindly confirm your attendance by{" "}
-            <span className="font-bold text-primary">March 1, 2026 </span>
+            <span className="font-bold text-primary">March 20, 2026 </span>
             so we can prepare your seat with love and care.
           </p>
         </CardContent>
