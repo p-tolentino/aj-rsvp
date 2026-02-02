@@ -73,7 +73,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
   useEffect(() => {
     calculateStats(rsvps || []);
-  }, []);
+  }, [rsvps]);
 
   const calculateStats = (data: RSVP[]) => {
     const attending = data.filter((r) => r.attendance === "attending");
