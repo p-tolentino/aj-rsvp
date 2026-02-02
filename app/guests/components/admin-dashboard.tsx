@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Lock, LogOut, Shield } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Lock, LogOut } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Download, Users, CheckCircle, XCircle, UserPlus } from "lucide-react";
+import { Download, Users, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
@@ -31,6 +31,9 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const tabsContentRef = useRef<HTMLDivElement>(null);
 
   // Simple Auth Check
   useEffect(() => {
@@ -83,6 +86,17 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
       totalResponses: data.length,
       totalGuests,
     });
+  };
+
+  const handleTabChange = (value: string) => {
+    if (value === activeTab || isTransitioning) return;
+
+    setIsTransitioning(true);
+    setActiveTab(value);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
   };
 
   const exportToCSV = () => {
@@ -210,9 +224,10 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-background p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
+            <div className="animate-fade-in">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl md:text-4xl font-serif font-bold text-secondary">
                   Wedding RSVP Dashboard
@@ -222,7 +237,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                 Manage and view all guest responses and analytics
               </p>
             </div>
-            <div>
+            <div className="animate-fade-in">
               <div className="flex items-center gap-3">
                 <Button
                   onClick={exportToCSV}
@@ -247,8 +262,9 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </div>
         </div>
 
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white">
+          <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -262,7 +278,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             </CardContent>
           </Card>
 
-          <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-white">
+          <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -276,7 +292,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             </CardContent>
           </Card>
 
-          <Card className="border-red-200 bg-gradient-to-br from-red-50 to-white">
+          <Card className="border-red-200 bg-gradient-to-br from-red-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -291,26 +307,42 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </Card>
         </div>
 
-        <Tabs defaultValue="all" className="space-y-6">
+        <Tabs
+          defaultValue="all"
+          className="space-y-6 animate-slide-up"
+          value={activeTab}
+          onValueChange={handleTabChange}
+        >
           <TabsList className="grid w-full md:w-auto grid-cols-3 md:inline-flex">
-            <TabsTrigger value="all">All Guests ({rsvps.length})</TabsTrigger>
-            <TabsTrigger value="attending">
+            <TabsTrigger
+              value="all"
+              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
+            >
+              All Guests ({rsvps.length})
+            </TabsTrigger>
+            <TabsTrigger
+              value="attending"
+              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
+            >
               Attending ({attendingGuests.length})
             </TabsTrigger>
-            <TabsTrigger value="not-attending">
+            <TabsTrigger
+              value="not-attending"
+              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
+            >
               Not Attending ({notAttendingGuests.length})
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-6">
             <Card>
-              <CardHeader>
+              <CardHeader className="animate-fade-in">
                 <CardTitle>All RSVPs</CardTitle>
                 <CardDescription>
                   Complete list of all guest responses
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="animate-fade-in">
                 <DataTable columns={columns} data={rsvps} />
               </CardContent>
             </Card>
@@ -318,13 +350,13 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
           <TabsContent value="attending" className="space-y-6">
             <Card>
-              <CardHeader>
+              <CardHeader className="animate-fade-in">
                 <CardTitle>Attending Guests</CardTitle>
                 <CardDescription>
                   {stats.totalGuests} guests confirmed attending
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="animate-fade-in">
                 <DataTable columns={columns} data={attendingGuests} />
               </CardContent>
             </Card>
@@ -332,18 +364,18 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
           <TabsContent value="not-attending" className="space-y-6">
             <Card>
-              <CardHeader>
+              <CardHeader className="animate-fade-in">
                 <CardTitle>Not Attending</CardTitle>
                 <CardDescription>Guests who cannot attend</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="animate-fade-in">
                 <DataTable columns={columns} data={notAttendingGuests} />
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
 
-        <Card className="mt-8 border-blue-100">
+        <Card className="mt-8 border-blue-100 animate-slide-up transition-all duration-500 delay-300">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -351,8 +383,8 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                   Quick Summary
                 </h3>
                 <ul className="space-y-3">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                  <li className="flex items-center gap-2 animate-fade-in">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                     <span className="text-gray-700">
                       <span className="font-medium">
                         {stats.totalAttending}
@@ -360,15 +392,15 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                       parties attending
                     </span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <li className="flex items-center gap-2 animate-fade-in delay-75">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
                     <span className="text-gray-700">
                       <span className="font-medium">{stats.totalGuests}</span>{" "}
                       total guests confirmed
                     </span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                  <li className="flex items-center gap-2 animate-fade-in delay-150">
+                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                     <span className="text-gray-700">
                       <span className="font-medium">
                         {stats.totalNotAttending}
@@ -392,13 +424,13 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                   Recent Activity
                 </h3>
                 <div className="space-y-3">
-                  {rsvps.slice(0, 3).map((rsvp) => (
+                  {rsvps.slice(0, 3).map((rsvp, index) => (
                     <div
                       key={rsvp.id}
-                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                      className={`flex items-center gap-3 p-3 bg-gray-50 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:shadow-sm transform hover:translate-x-1 animate-fade-in delay-${index * 100}`}
                     >
                       <div
-                        className={`p-2 rounded-full ${
+                        className={`p-2 rounded-full transition-all duration-300 ${
                           rsvp.attendance === "attending"
                             ? "bg-emerald-100 text-emerald-600"
                             : "bg-red-100 text-red-600"
