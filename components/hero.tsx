@@ -3,23 +3,31 @@
 import { Sparkles } from "lucide-react";
 import Countdown from "./countdown";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden py-20 md:py-40 min-h-[90vh] md:min-h-[100vh]">
       <div className="absolute inset-0 z-0">
         <div className="relative w-full h-full">
-          <video
-            autoPlay
-            loop
-            muted
-            src="/AJ.mp4"
-            className="absolute w-full h-full object-cover blur-sm opacity-60 -mt-72 md:-mt-24"
+          <Image
+            src="/AJ.gif"
+            alt="AJ Silver Monogram"
+            priority
+            unoptimized
+            width={100}
+            height={500}
+            className="absolute w-full h-full object-cover blur-sm opacity-60 -mt-36 md:-mt-24"
+          />
+          <div
+            className="absolute inset-0 z-10"
+            onClick={(e) => e.preventDefault()}
+            onTouchStart={(e) => e.preventDefault()}
+            style={{ cursor: "default" }}
           />
         </div>
 
         <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white" />
-
         <div className="absolute inset-0 bg-secondary/40" />
       </div>
 
