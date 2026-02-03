@@ -48,6 +48,7 @@ function ColorSwatch({ color, name, image, description }: ColorSwatchProps) {
             src={image}
             alt={`${name} dress example`}
             fill
+            preload
             className="object-cover rounded-t-lg"
             sizes="(max-width: 768px) 256px, 288px"
           />

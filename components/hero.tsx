@@ -13,7 +13,7 @@ export default function Hero() {
           <Image
             src="/AJ.gif"
             alt="AJ Silver Monogram"
-            priority
+            preload
             unoptimized
             width={100}
             height={500}
