@@ -134,16 +134,16 @@ export default function Header() {
             <div className="container mx-auto px-4 py-4">
               <nav className="flex flex-col space-y-4">
                 <Link
-                  href={{ pathname: "/", hash: "#details" }}
+                  href={{ pathname: "/", hash: "#venues" }}
                   onClick={(e) => {
                     if (pathname === "/") {
-                      handleLinkClick(e, "#details");
+                      handleLinkClick(e, "#venues");
                     }
                     closeMenu();
                   }}
                   className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
                 >
-                  Event Details
+                  Venues
                 </Link>
                 <Link
                   href={{ pathname: "/", hash: "#timeline" }}
