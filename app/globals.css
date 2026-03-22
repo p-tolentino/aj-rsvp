@@ -53,6 +53,12 @@
     --ring: 212 27% 60%; /* #7d9cb9 */
     --radius: 0.5rem;
   }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
 }
 
 @layer base {
@@ -334,4 +340,18 @@ div[id] {
 
 .bg-card-soft {
   background: linear-gradient(135deg, #f9fafb 0%, #f1f3f5 100%);
+}
+
+.maplibregl-popup-content {
+  padding: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.maplibregl-popup-tip {
+  display: none !important;
+}
+
+.maplibregl-popup {
+  z-index: 10;
 }

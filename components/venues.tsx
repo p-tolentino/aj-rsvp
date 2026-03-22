@@ -98,15 +98,7 @@ export default function Venues() {
       </div>
 
       {/* Itinerary */}
-      <div
-        id="timeline"
-        className="mt-16 sm:mt-20 md:mt-28 lg:mt-36 xl:mt-44 w-full"
-      >
-        <div className="text-center px-4 sm:px-6 md:px-8 mb-8 sm:mb-12 md:mb-16">
-          <h1 className="text-8xl md:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious">
-            The Itinerary
-          </h1>
-        </div>
+      <div className="mt-16 sm:mt-20 md:mt-28 lg:mt-36 xl:mt-44 w-full">
         <Timeline />
       </div>
     </section>
