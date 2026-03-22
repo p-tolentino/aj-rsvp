@@ -28,7 +28,7 @@ export function ColorSwatch({
       <TooltipTrigger asChild>
         <button
           onClick={() => setOpen(!open)}
-          className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg p-2"
+          className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#212122]/50 rounded-lg p-2"
         >
           <div
             className="w-14 h-14 md:w-16 md:h-16 rounded-full shadow- border-3 border-white dark:border-gray-800 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-white"

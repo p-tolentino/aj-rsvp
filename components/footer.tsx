@@ -85,8 +85,8 @@ export default function Footer() {
   return (
     <footer className="border-t bg-[#353839] text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 justify-center md:jutify-start">
-          <div>
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+          <div className="flex flex-col w-full text-center items-center md:text-start md:items-start">
             <Link href="/" className="flex items-center gap-2 h-12 w-12 mb-4">
               <Image
                 src="/aj-logo-w.png"

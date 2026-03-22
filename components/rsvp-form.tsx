@@ -394,6 +394,7 @@ export default function MultiStepRSVPForm() {
                               placeholder="Enter your first name"
                               className="border-[#212122]/20 focus:border-[#212122] text-sm sm:text-base"
                               {...field}
+                              value={field.value.toLocaleUpperCase()}
                               disabled={isSubmitting}
                             />
                           </FormControl>
@@ -415,6 +416,7 @@ export default function MultiStepRSVPForm() {
                               placeholder="Enter your last name"
                               className="border-[#212122]/20 focus:border-[#212122] text-sm sm:text-base"
                               {...field}
+                              value={field.value.toLocaleUpperCase()}
                               disabled={isSubmitting}
                             />
                           </FormControl>

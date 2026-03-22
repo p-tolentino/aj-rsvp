@@ -19,16 +19,12 @@ export async function verifyGuestName(
   try {
     const supabase = await createClient();
 
-    console.log(firstName, lastName);
-
     const { data: guest, error } = await supabase
       .from("guest_list")
       .select("*")
       .ilike("first_name", firstName.trim())
       .ilike("last_name", lastName.trim())
       .single();
-
-    console.log(guest);
 
     if (error || !guest) {
       return {
@@ -65,8 +61,6 @@ export async function verifyGuestName(
 
     const existingRSVPIds =
       existingRSVPs?.map((r) => r.rsvp_for_guest_id) || [];
-
-    console.log(guest, availableGuests, existingRSVPIds);
 
     return {
       verified: true,
@@ -106,8 +100,6 @@ export async function submitCompleteRSVP(
 ): Promise<SubmitRSVPResult> {
   try {
     const supabase = await createClient();
-
-    console.log(data);
 
     // If guest is verified and has selected multiple guests, create multiple RSVPs
     if (data.is_verified_guest && data.selected_guest_ids.length > 0) {

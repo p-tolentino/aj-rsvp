@@ -88,7 +88,7 @@ export default function PlaylistSectionSimple() {
                   {!loadedIndexes.has(index) && (
                     <div className="absolute inset-0 bg-[#212122]-100 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#212122] mx-auto mb-2"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
                         <p className="text-sm text-white">
                           Loading playlist...
                         </p>
@@ -129,7 +129,7 @@ export default function PlaylistSectionSimple() {
                   {!loadedIndexes.has(index) && (
                     <div className="absolute inset-0 bg-[#212122]-100 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#212122] mx-auto mb-2"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
                         <p className="text-sm  text-white">
                           Loading playlist...
                         </p>

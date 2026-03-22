@@ -9,7 +9,6 @@ import Venues from "@/components/venues";
 import FAQs from "@/components/faqs";
 import LocalGuide from "@/components/local-guide";
 import Registry from "@/components/registry";
-import Logo from "@/components/logo";
 
 export default async function Home() {
   return (

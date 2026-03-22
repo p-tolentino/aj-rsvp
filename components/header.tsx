@@ -124,7 +124,7 @@ export default function Header() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="h-9 w-9 text-[#383539] bg-[#383539] text-background"
+                className="h-9 w-9 bg-[#383539] text-background hover:bg-[#383539]/90 text-white"
               >
                 {isMenuOpen ? (
                   <X className="h-4 w-4" />
