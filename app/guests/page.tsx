@@ -16,7 +16,7 @@ const Admin: React.FC<AdminProps> = async ({}) => {
   if (error) throw error;
 
   return (
-    <div className="">
+    <div className="bg-[url(/bg-hero.png)] bg-contain bg-center">
       <AdminDashboard rsvps={data} />
     </div>
   );

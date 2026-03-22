@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
             placeholder="Search all guests..."
             value={globalFilter ?? ""}
             onChange={(event) => setGlobalFilter(event.target.value)}
-            className="pl-9 border-gray-300"
+            className="pl-9 border-gray-300 bg-transparent"
           />
         </div>
         <Button
@@ -74,15 +74,15 @@ export function DataTable<TData, TValue>({
             table.resetColumnFilters();
             setGlobalFilter("");
           }}
-          className="border-gray-300"
+          className="border-gray-300 bg-transparent"
         >
           Clear Filters
         </Button>
       </div>
 
       {/* Table */}
-      <div className="rounded-md border border-gray-200">
-        <Table>
+      <div className="">
+        <Table className="border border-gray-300">
           <TableHeader className="bg-gray-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -116,7 +116,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

@@ -15,7 +15,7 @@ export async function createClient() {
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, options),
             );
           } catch {
             // The `setAll` method was called from a Server Component.
@@ -24,18 +24,6 @@ export async function createClient() {
           }
         },
       },
-    }
+    },
   );
 }
-
-export type RSVP = {
-  id: string;
-  created_at: string;
-  full_name: string;
-  email: string | null;
-  attendance: "attending" | "not-attending";
-  guests: number;
-  message?: string | null;
-};
-
-export type InsertRSVP = Omit<RSVP, "id" | "created_at">;

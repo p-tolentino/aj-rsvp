@@ -1,67 +1,76 @@
-"use client";
-
 import { Sparkles } from "lucide-react";
 import Countdown from "./countdown";
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "./logo";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-40 min-h-[90vh] md:min-h-[100vh]">
-      <div className="absolute inset-0 z-0">
-        <div className="relative w-full h-full">
-          <Image
-            src="/AJ.gif"
-            alt="AJ Silver Monogram"
-            preload
-            unoptimized
-            width={100}
-            height={500}
-            className="absolute w-full h-full object-cover blur-sm opacity-60 -mt-36 md:-mt-24"
-          />
-          <div
-            className="absolute inset-0 z-10"
-            onClick={(e) => e.preventDefault()}
-            onTouchStart={(e) => e.preventDefault()}
-            style={{ cursor: "default" }}
-          />
-        </div>
+    <section className="overflow-hidden min-h-[90vh] md:min-h-[100vh] bg-[url(/bg-hero.png)] bg-cover bg-center w-full flex flex-col pb-8">
+      <Logo />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white" />
-        <div className="absolute inset-0 bg-secondary/40" />
-      </div>
-
-      <div className="container relative z-10 mx-auto px-4 text-center ">
-        <Link
-          target="_blank"
-          href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=NXZqdWZobzVyMTcwbDRobjJ0NGM5MHA1Y3UgcGhpbGlwbS50b2xlbnRpbm9AbQ&amp;tmsrc=philipm.tolentino%40gmail.com"
-          className=""
-        >
-          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 hover:scale-105 hover:bg-white/80 transition-all text-white hover:text-foreground">
-            <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-medium">Save the Date</span>
-          </div>
-        </Link>
-
-        <h1 className="font-serif font-bold mb-6 text-white drop-shadow-lg">
-          <span className="block text-5xl md:text-9xl text-white/95 mb-2 drop-shadow-md font-dancing">
-            Anne & Jacob
-          </span>
-          <span className="block text-3xl md:text-5xl text-white/95 mb-2 drop-shadow-md font-dancing">
-            June 20, 2026
+      <div
+        id="story"
+        className="flex flex-col items-center justify-center px-4 md:px-8 lg:px-16"
+      >
+        <h1 className="flex flex-col text-black text-7xl sm:text-9xl lg:text-[180px] lg:leading-none text-center font-beautifully-delicious">
+          <span>Two People met</span>
+          <span className="-mt-9 ml-4 sm:-mt-16 sm:ml-6 lg:-mt-20 lg:ml-10 xl:-mt-24 xl:ml-10">
+            in an event
           </span>
         </h1>
-        <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8 drop-shadow-md">
-          Celebrate this once-in-a-lifetime moment with us.
-        </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Countdown />
+        <div className="flex w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl items-center justify-between gap-4 sm:gap-6 md:gap-8 mb-6">
+          <span className="text-lg sm:text-xl md:text-2xl font-medium">
+            SINCE
+          </span>
+          <div className="flex-1 flex justify-center">
+            <Image
+              src="/image-hero.png"
+              alt="sketch-couple"
+              height={1000}
+              width={1000}
+              preload
+              className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-60 h-full object-contain"
+            />
+          </div>
+          <span className="text-lg sm:text-xl md:text-2xl font-medium">
+            2021
+          </span>
         </div>
+
+        <p className="text-base sm:text-lg md:text-xl text-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-60 mb-6 sm:mb-8 w-full max-w-7xl mx-auto">
+          The room was filled with ambition, ideas, and voices that carried
+          influence—but among all the invited speakers that day, Jacob and Anne
+          stood unaware that their lives were about to quietly change. They were
+          simply two professionals scheduled on the same program to give their
+          speeches, exchanging polite glances and brief conversations in between
+          sessions. Nothing about that moment seemed extraordinary—no grand
+          music, no dramatic pause—just an ordinary event unfolding as expected.
+          And yet, hidden within that simplicity was something neither of them
+          could have predicted: that this seemingly routine encounter would
+          become the beginning of a once-in-a-lifetime connection, the kind that
+          doesn&apos;t just cross paths—but changes direction entirely.
+        </p>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
-      <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-white/20 to-transparent" />
+      <div className="flex flex-col gap-4 justify-center items-center px-4">
+        <Countdown />
+        {/* <div className="container relative z-10 mx-auto text-center">
+          <Link
+            target="_blank"
+            href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=NXZqdWZobzVyMTcwbDRobjJ0NGM5MHA1Y3UgcGhpbGlwbS50b2xlbnRpbm9AbQ&amp;tmsrc=philipm.tolentino%40gmail.com"
+            className="inline-block"
+          >
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/20 backdrop-blur-sm border border-black/30 hover:scale-105 hover:bg-white/80 transition-all text-black hover:text-foreground">
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm font-medium">
+                Save the Date
+              </span>
+            </div>
+          </Link>
+        </div> */}
+      </div>
     </section>
   );
 }

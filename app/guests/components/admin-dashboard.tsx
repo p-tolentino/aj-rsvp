@@ -16,16 +16,7 @@ import { Download, Users, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-
-type RSVP = {
-  id: string;
-  created_at: string;
-  full_name: string;
-  email: string | null;
-  attendance: "attending" | "not-attending";
-  guests: number;
-  message: string | null;
-};
+import type { RSVP } from "@/lib/types";
 
 export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const [password, setPassword] = useState("");
@@ -49,7 +40,6 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setError("");
-      // localStorage convenience
       localStorage.setItem("wedding_admin_authenticated", "true");
     } else {
       setError("Incorrect password. Please try again.");
@@ -68,7 +58,9 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
     totalAttending: 0,
     totalNotAttending: 0,
     totalResponses: 0,
-    totalGuests: 0,
+    totalVerified: 0,
+    totalWalkIns: 0,
+    totalGuestListAttending: 0,
   });
 
   useEffect(() => {
@@ -78,13 +70,17 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const calculateStats = (data: RSVP[]) => {
     const attending = data.filter((r) => r.attendance === "attending");
     const notAttending = data.filter((r) => r.attendance === "not-attending");
-    const totalGuests = attending.reduce((sum, r) => sum + r.guests, 0);
+    const verified = data.filter((r) => r.is_verified_guest);
+    const walkIns = data.filter((r) => !r.is_verified_guest);
+    const guestListAttending = attending.filter((r) => r.is_verified_guest);
 
     setStats({
       totalAttending: attending.length,
       totalNotAttending: notAttending.length,
       totalResponses: data.length,
-      totalGuests,
+      totalVerified: verified.length,
+      totalWalkIns: walkIns.length,
+      totalGuestListAttending: guestListAttending.length,
     });
   };
 
@@ -104,7 +100,9 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
       "Name",
       "Email",
       "Attendance",
-      "Guests",
+      "Verified Guest",
+      "Guest Status",
+      "RSVP Type",
       "Message",
       "Date",
     ];
@@ -115,7 +113,11 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           `"${r.full_name}"`,
           `"${r.email || ""}"`,
           r.attendance,
-          r.guests,
+          r.is_verified_guest ? "Yes" : "No",
+          r.is_verified_guest ? "On Guest List" : "Walk-in",
+          r.rsvp_for_guest_id && r.rsvp_for_guest_id !== r.submitted_by_guest_id
+            ? "RSVP for others"
+            : "Self RSVP",
           `"${(r.message || "").replace(/"/g, '""')}"`,
           new Date(r.created_at).toLocaleDateString("en-US", {
             year: "numeric",
@@ -151,13 +153,13 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-background flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-              <Lock className="h-8 w-8 text-primary" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#383539]/10 mb-4">
+              <Lock className="h-8 w-8 text-[#383539]" />
             </div>
-            <h1 className="text-3xl font-serif font-bold text-secondary mb-2">
+            <h1 className="text-3xl font-serif font-bold text-[#383539] mb-2">
               Admin Access
             </h1>
             <p className="text-gray-600">
@@ -165,13 +167,13 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             </p>
           </div>
 
-          <Card className="border-primary/20 shadow-lg">
+          <Card className="border-[#383539]/20 shadow-lg">
             <CardContent className="p-8">
               <form onSubmit={handleLogin} className="space-y-6">
                 <div className="space-y-2">
                   <label
                     htmlFor="password"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-bold text-gray-700"
                   >
                     Admin Password
                   </label>
@@ -184,7 +186,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                       setError("");
                     }}
                     placeholder="Enter the password"
-                    className={`border-gray-300 focus:border-primary ${
+                    className={`border-gray-300 focus:border-[#383539] ${
                       error ? "border-red-300" : ""
                     }`}
                     autoComplete="current-password"
@@ -194,7 +196,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
 
                 <Button
                   onClick={(e) => handleLogin(e)}
-                  className="w-full bg-primary hover:bg-primary/90"
+                  className="w-full bg-[#383539] hover:bg-[#383539]/90 text-background"
                   size="lg"
                 >
                   Access Dashboard
@@ -212,7 +214,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </Card>
 
           <div className="mt-6 text-center">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-800">
               This page is secured. Unauthorized access is prohibited.
             </p>
           </div>
@@ -222,15 +224,15 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-background p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="animate-fade-in">
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl md:text-4xl font-serif font-bold text-secondary">
-                  Wedding RSVP Responses
+                <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#383539]">
+                  Wedding RSVP Dashboard
                 </h1>
               </div>
               <p className="text-gray-600">
@@ -252,7 +254,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                   onClick={handleLogout}
                   variant="outline"
                   size="sm"
-                  className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700"
+                  className="border-red-200 text-red-600 hover:bg-red-800 hover:text-white"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
@@ -262,14 +264,14 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards - Updated */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Responses</p>
-                  <p className="text-3xl font-bold text-secondary mt-2">
+                  <p className="text-3xl font-bold text-[#383539] mt-2">
                     {stats.totalResponses}
                   </p>
                 </div>
@@ -283,8 +285,8 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Attending</p>
-                  <p className="text-3xl font-bold text-secondary mt-2">
-                    {stats.totalGuests}
+                  <p className="text-3xl font-bold text-[#383539] mt-2">
+                    {stats.totalAttending}
                   </p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-emerald-500" />
@@ -297,7 +299,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Not Attending</p>
-                  <p className="text-3xl font-bold text-secondary mt-2">
+                  <p className="text-3xl font-bold text-[#383539] mt-2">
                     {stats.totalNotAttending}
                   </p>
                 </div>
@@ -313,12 +315,12 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           value={activeTab}
           onValueChange={handleTabChange}
         >
-          <TabsList className="grid w-full md:w-auto grid-cols-3 md:inline-flex">
+          <TabsList className="grid w-full md:w-auto grid-cols-2 lg:grid-cols-5 md:inline-flex bg-transparent text-[#212122]">
             <TabsTrigger
               value="all"
               className="transition-all duration-300 data-[state=active]:scale-[1.02]"
             >
-              All Guests ({rsvps.length})
+              All ({rsvps.length})
             </TabsTrigger>
             <TabsTrigger
               value="attending"
@@ -353,7 +355,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               <CardHeader className="animate-fade-in">
                 <CardTitle>Attending Guests</CardTitle>
                 <CardDescription>
-                  {stats.totalGuests} guests confirmed attending
+                  {stats.totalAttending} guests confirmed attending
                 </CardDescription>
               </CardHeader>
               <CardContent className="animate-fade-in">
@@ -366,7 +368,9 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             <Card>
               <CardHeader className="animate-fade-in">
                 <CardTitle>Not Attending</CardTitle>
-                <CardDescription>Guests who cannot attend</CardDescription>
+                <CardDescription>
+                  {stats.totalNotAttending} guests cannot attend
+                </CardDescription>
               </CardHeader>
               <CardContent className="animate-fade-in">
                 <DataTable columns={columns} data={notAttendingGuests} />
@@ -375,52 +379,12 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           </TabsContent>
         </Tabs>
 
-        <Card className="mt-8 border-blue-100 animate-slide-up transition-all duration-500 delay-300">
+        {/* Summary Card - Updated */}
+        <Card className="mt-8 border-gray-300 animate-slide-up transition-all duration-500 delay-300">
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-semibold text-secondary mb-4">
-                  Quick Summary
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-center gap-2 animate-fade-in">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span className="text-gray-700">
-                      <span className="font-medium">
-                        {stats.totalAttending}
-                      </span>{" "}
-                      parties attending
-                    </span>
-                  </li>
-                  <li className="flex items-center gap-2 animate-fade-in delay-75">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                    <span className="text-gray-700">
-                      <span className="font-medium">{stats.totalGuests}</span>{" "}
-                      total guests confirmed
-                    </span>
-                  </li>
-                  <li className="flex items-center gap-2 animate-fade-in delay-150">
-                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                    <span className="text-gray-700">
-                      <span className="font-medium">
-                        {stats.totalNotAttending}
-                      </span>{" "}
-                      parties cannot attend
-                    </span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                    <span className="text-gray-700">
-                      <span className="font-medium">
-                        {Math.round((stats.totalResponses / 150) * 100)}%
-                      </span>{" "}
-                      response rate
-                    </span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-secondary mb-4">
+            <div className="w-full gap-6">
+              <div className="w-full">
+                <h3 className="text-lg font-semibold text-[#383539] mb-4">
                   Recent Activity
                 </h3>
                 <div className="space-y-3">
@@ -443,14 +407,14 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">
-                          {rsvp.full_name}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-gray-900">
+                            {rsvp.full_name}
+                          </p>
+                        </div>
                         <p className="text-sm text-gray-500">
                           {rsvp.attendance === "attending"
-                            ? `Attending with total of ${rsvp.guests} guest${
-                                rsvp.guests > 1 ? "s" : ""
-                              }`
+                            ? "Attending"
                             : "Not attending"}
                         </p>
                       </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Dancing_Script } from "next/font/google";
+import { WindSong } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import Header from "@/components/header";
@@ -7,15 +7,9 @@ import Footer from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
 import PageTransition from "@/components/page-transition";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  style: ["normal", "italic"],
-});
-const dancing = Dancing_Script({
-  subsets: ["latin"],
-  variable: "--font-dancing-script",
+const windSong = WindSong({
+  weight: ["400"],
+  variable: "--font-wind-song",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${dancing.variable} scroll-smooth`}
+      className={`times-new-roman ${windSong.variable} scroll-smooth`}
     >
       <body className="min-h-screen flex flex-col">
         <PageTransition />

@@ -89,7 +89,7 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-playfair)", "serif"],
         sans: ["var(--font-inter)", "sans-serif"],
-        script: ["var(--font-dancing-script)", "cursive"],
+        "beautifully-delicious": ["BeautifullyDelicious"],
       },
       animation: {
         "fade-in": "fadeIn 1s ease-in-out",

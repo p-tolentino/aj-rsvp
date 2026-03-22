@@ -1,8 +1,22 @@
 "use client";
 
-import { Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Heart } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+export const routes = [
+  { name: "Our Story", href: "#story" },
+  { name: "Entourage", href: "#entourage" },
+  { name: "Venues", href: "#venues" },
+  { name: "Timeline", href: "#timeline" },
+  { name: "FAQs", href: "#faqs" },
+  { name: "Local Guide", href: "#local-spots" },
+  { name: "Attire", href: "#attire" },
+  { name: "Registry", href: "#registry" },
+  { name: "Paylists", href: "#playlists" },
+  { name: "RSVP", href: "#rsvp" },
+];
 
 export default function Footer() {
   const pathname = usePathname();
@@ -51,7 +65,7 @@ export default function Footer() {
               handleFooterLinkClick(e, href);
             }
           }}
-          className="text-white/80 hover:text-primary transition-all hover:pl-2 block py-1"
+          className="text-white/80 hover:text-gray-400 transition-all hover:pl-2 block py-1"
         >
           {children}
         </Link>
@@ -61,7 +75,7 @@ export default function Footer() {
     return (
       <Link
         href={href}
-        className="text-white/80 hover:text-primary transition-all hover:pl-2 block py-1"
+        className="text-white/80 hover:text-gray-400 transition-all hover:pl-2 block py-1"
       >
         {children}
       </Link>
@@ -69,44 +83,35 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-20 border-t bg-secondary text-white">
+    <footer className="border-t bg-[#353839] text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 justify-center md:jutify-start">
           <div>
-            <div className="flex items-center gap-2 mb-4 justify-center md:justify-start">
-              <Heart className="h-6 w-6 text-primary fill-primary" />
-              <span className="text-xl font-serif font-semibold">
-                A & J Wedding
-              </span>
-            </div>
-            <p className="text-primary text-sm md:text-base">
+            <Link href="/" className="flex items-center gap-2 h-12 w-12 mb-4">
+              <Image
+                src="/aj-logo-w.png"
+                alt="A&J Wedding"
+                height={600}
+                width={600}
+                preload
+                className="w-full h-full object-cover"
+              />
+            </Link>
+            <p className="text-gray-400 text-sm md:text-base">
               Join us as we celebrate our once-in-a-lifetime moment together.
             </p>
           </div>
 
           <div className="text-center md:text-start">
-            <h3 className="text-lg font-serif font-semibold mb-4 text-primary">
+            <h3 className="text-lg font-serif font-semibold mb-4 text-gray-400">
               Quick Links
             </h3>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <li>
-                <FooterLink href="#venues">Venues</FooterLink>
-              </li>
-              <li>
-                <FooterLink href="#timeline">Timeline</FooterLink>
-              </li>
-              {/* <li>
-                <FooterLink href="#entourage">Entourage</FooterLink>
-              </li> */}
-              <li>
-                <FooterLink href="#attire">Attire</FooterLink>
-              </li>
-              <li>
-                <FooterLink href="#playlists">Playlists</FooterLink>
-              </li>
-              <li>
-                <FooterLink href="#rsvp">RSVP</FooterLink>
-              </li>
+            <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {routes.map((route) => (
+                <li key={route.href}>
+                  <FooterLink href={route.href}>{route.name}</FooterLink>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -114,15 +119,13 @@ export default function Footer() {
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
           <p className="text-white/60 text-sm md:text-base">
             © {new Date().getFullYear()}{" "}
-            <span className="text-lg md:text-xl font-serif font-semibold ">
-              A & J
-            </span>{" "}
-            Wedding. All rights reserved.
+            <span className="text-lg md:text-xl">A & J</span> Wedding. All
+            rights reserved.
           </p>
           <p className="text-white/60 mt-2 text-sm md:text-base">
             <a
               href="https://www.ajthewedding.com"
-              className="text-primary hover:underline hover:text-primary/80 transition-all"
+              className="text-gray-400 hover:underline hover:text-gray-400/80 transition-all"
               target="_blank"
               rel="noopener noreferrer"
             >

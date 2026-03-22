@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { routes } from "./footer";
+import Image from "next/image";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,7 +60,7 @@ export default function Header() {
               handleLinkClick(e, href);
             }
           }}
-          className="text-sm font-medium text-secondary hover:text-primary transition-colors hover:scale-105"
+          className="text-sm font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
         >
           {children}
         </Link>
@@ -69,7 +71,7 @@ export default function Header() {
     return (
       <Link
         href={href}
-        className="text-sm font-medium text-secondary hover:text-primary transition-colors hover:scale-105"
+        className="text-sm font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
       >
         {children}
       </Link>
@@ -78,24 +80,32 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
+      <header className="sticky top-0 z-50 w-full border-b border-b-[#212122]/20 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Heart className="h-5 w-5 md:h-6 md:w-6 text-primary fill-primary" />
-              <span className="text-lg md:text-xl font-serif font-semibold text-secondary">
-                A & J
-              </span>
+            <Link href="/" className="flex items-center gap-2 h-8 w-8">
+              <Image
+                src="/aj-logo.png"
+                alt="A&J Wedding"
+                height={600}
+                width={600}
+                preload
+                className="w-full h-full object-cover"
+              />
             </Link>
 
             <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-              <NavLink href="#venues">Venues</NavLink>
-              <NavLink href="#timeline">Timeline</NavLink>
-              {/* <NavLink href="#entourage">Entourage</NavLink> */}
-              <NavLink href="#attire">Attire</NavLink>
-              <NavLink href="#playlists">Playlists</NavLink>
+              {routes.map(
+                (route) =>
+                  route.name !== "RSVP" && (
+                    <NavLink key={route.href} href={route.href}>
+                      {route.name}
+                    </NavLink>
+                  ),
+              )}
+
               <Link href="/#rsvp" className="inline-block">
-                <Button className="bg-primary hover:bg-primary/90 text-white text-sm px-4 py-2 transform transition-transform hover:scale-105">
+                <Button className="bg-[#383539] hover:bg-[#383539]/90 text-white text-sm px-4 py-2 transform transition-transform hover:scale-105">
                   RSVP Now
                 </Button>
               </Link>
@@ -105,16 +115,16 @@ export default function Header() {
               <Link href="/#rsvp">
                 <Button
                   size="sm"
-                  className="bg-primary hover:bg-primary/90 text-white text-xs px-3 py-1"
+                  className="bg-[#383539] hover:bg-[#383539]/90 text-white text-xs px-3 py-1"
                 >
                   RSVP
                 </Button>
               </Link>
               <Button
                 variant="ghost"
-                size="icon"
+                size="sm"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="h-8 w-8 text-secondary"
+                className="h-9 w-9 text-[#383539] bg-[#383539] text-background"
               >
                 {isMenuOpen ? (
                   <X className="h-4 w-4" />
@@ -129,58 +139,28 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-x-0 top-16 z-40 md:hidden animate-slide-down">
-          <div className="bg-white border-b shadow-lg">
+        <div className="fixed inset-x-0 top-14 z-40 md:hidden animate-slide-down">
+          <div className="bg-white border-b shadow-lg  overflow-auto max-h-[300px]">
             <div className="container mx-auto px-4 py-4">
-              <nav className="flex flex-col space-y-4">
-                <Link
-                  href={{ pathname: "/", hash: "#venues" }}
-                  onClick={(e) => {
-                    if (pathname === "/") {
-                      handleLinkClick(e, "#venues");
-                    }
-                    closeMenu();
-                  }}
-                  className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
-                >
-                  Venues
-                </Link>
-                <Link
-                  href={{ pathname: "/", hash: "#timeline" }}
-                  onClick={(e) => {
-                    if (pathname === "/") {
-                      handleLinkClick(e, "#timeline");
-                    }
-                    closeMenu();
-                  }}
-                  className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
-                >
-                  Timeline
-                </Link>
-                <Link
-                  href={{ pathname: "/", hash: "#attire" }}
-                  onClick={(e) => {
-                    if (pathname === "/") {
-                      handleLinkClick(e, "#attire");
-                    }
-                    closeMenu();
-                  }}
-                  className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
-                >
-                  Attire
-                </Link>
-                <Link
-                  href={{ pathname: "/", hash: "#rsvp" }}
-                  onClick={(e) => {
-                    if (pathname === "/") {
-                      handleLinkClick(e, "#rsvp");
-                    }
-                    closeMenu();
-                  }}
-                  className="text-sm font-medium text-secondary py-2 hover:text-primary transition-colors hover:pl-2"
-                >
-                  RSVP Form
-                </Link>
+              <nav className="flex flex-col space-y-4 ">
+                {routes.map(
+                  (route) =>
+                    route.href !== "#rsvp" && (
+                      <Link
+                        key={route.href}
+                        href={{ pathname: "/", hash: route.href }}
+                        onClick={(e) => {
+                          if (pathname === "/") {
+                            handleLinkClick(e, route.href);
+                          }
+                          closeMenu();
+                        }}
+                        className="text-sm font-medium text-[#383539] py-2 hover:text-gray-500 transition-all hover:pl-2"
+                      >
+                        {route.name}
+                      </Link>
+                    ),
+                )}
               </nav>
             </div>
           </div>

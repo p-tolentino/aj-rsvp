@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "./ui/card";
-import { Music2 } from "lucide-react";
 import { useState } from "react";
 
 const playlists = [
@@ -69,122 +68,94 @@ export default function PlaylistSectionSimple() {
   };
 
   return (
-    <div id="playlists" className="max-w-7xl mx-auto">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 mb-4">
-          <Music2 className="h-6 w-6 md:h-10 md:w-10 text-primary" />
-          <h2 className="text-4xl md:text-5xl font-serif font-semibold text-secondary">
-            Wedding Playlists
-          </h2>
+    <section className="mx-auto px-3 md:px-4 py-16 bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full h-full">
+      <div id="playlists" className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <h2 className="text-7xl md:text-[180px] leading-none font-beautifully-delicious text-black">
+              Wedding Playlists
+            </h2>
+          </div>
         </div>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Curated playlists for every moment of our special day
-        </p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
-        {playlists1.map((playlist, index) => (
-          <Card
-            key={playlist.id}
-            className="border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg overflow-hidden group"
-          >
-            <CardContent className="p-0">
-              <div className="p-6 pb-4">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="text-sm font-medium text-primary mb-1">
-                      {`0${index + 1}`}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+          {playlists1.map((playlist, index) => (
+            <Card
+              key={playlist.id}
+              className="border-[#212122]/20 hover:border-[#212122]/40 transition-all duration-300 hover:shadow-lg overflow-hidden group bg-[#212122]"
+            >
+              <CardContent className="p-0">
+                <div className="h-[380px] relative">
+                  {!loadedIndexes.has(index) && (
+                    <div className="absolute inset-0 bg-[#212122]-100 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#212122] mx-auto mb-2"></div>
+                        <p className="text-sm text-white">
+                          Loading playlist...
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Music2 className="h-5 w-5 text-primary" />
-                  </div>
+                  )}
+                  <iframe
+                    src={playlist.url}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    className="transition-transform duration-300"
+                    title={playlist.title}
+                    onLoad={() => handleIframeLoad(index)}
+                    style={{
+                      opacity: loadedIndexes.has(index) ? 1 : 0,
+                      transition: "opacity 0.3s",
+                    }}
+                  />
                 </div>
-              </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-              <div className="h-[380px] relative">
-                {!loadedIndexes.has(index) && (
-                  <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-sm text-gray-500">
-                        Loading playlist...
-                      </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 justify-center mt-10">
+          {playlists2.map((playlist, index) => (
+            <Card
+              key={playlist.id}
+              className={`border-[#212122]/20 hover:border-[#212122]/40 transition-all duration-300 hover:shadow-lg overflow-hidden group bg-[#212122] ${
+                index === 0 && "lg:col-start-2 lg:col-end-4"
+              } ${index === 1 && "lg:col-start-4 lg:col-end-6"}`}
+            >
+              <CardContent className="p-0">
+                <div className="h-[380px] relative">
+                  {!loadedIndexes.has(index) && (
+                    <div className="absolute inset-0 bg-[#212122]-100 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#212122] mx-auto mb-2"></div>
+                        <p className="text-sm  text-white">
+                          Loading playlist...
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-                <iframe
-                  src={playlist.url}
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  className="transition-transform duration-300"
-                  title={playlist.title}
-                  onLoad={() => handleIframeLoad(index)}
-                  style={{
-                    opacity: loadedIndexes.has(index) ? 1 : 0,
-                    transition: "opacity 0.3s",
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 justify-center mt-10">
-        {playlists2.map((playlist, index) => (
-          <Card
-            key={playlist.id}
-            className={`border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg overflow-hidden group ${
-              index === 0 && "lg:col-start-2 lg:col-end-4"
-            } ${index === 1 && "lg:col-start-4 lg:col-end-6"}`}
-          >
-            <CardContent className="p-0">
-              <div className="p-6 pb-4">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="text-sm font-medium text-primary mb-1">
-                      {`0${index + 4}`}
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Music2 className="h-5 w-5 text-primary" />
-                  </div>
+                  )}
+                  <iframe
+                    src={playlist.url}
+                    width="100%"
+                    height="100%"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    className="transition-transform duration-300"
+                    title={playlist.title}
+                    onLoad={() => handleIframeLoad(index)}
+                    style={{
+                      opacity: loadedIndexes.has(index) ? 1 : 0,
+                      transition: "opacity 0.3s",
+                    }}
+                  />
                 </div>
-              </div>
-
-              <div className="h-[380px] relative">
-                {!loadedIndexes.has(index) && (
-                  <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-sm text-gray-500">
-                        Loading playlist...
-                      </p>
-                    </div>
-                  </div>
-                )}
-                <iframe
-                  src={playlist.url}
-                  width="100%"
-                  height="100%"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  className="transition-transform duration-300"
-                  title={playlist.title}
-                  onLoad={() => handleIframeLoad(index)}
-                  style={{
-                    opacity: loadedIndexes.has(index) ? 1 : 0,
-                    transition: "opacity 0.3s",
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

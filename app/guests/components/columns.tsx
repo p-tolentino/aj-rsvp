@@ -10,6 +10,8 @@ import {
   Calendar,
   MessageSquare,
   Eye,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -20,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { RSVP } from "@/lib/supabase/server";
+import type { RSVP } from "@/lib/types";
 
 export const columns: ColumnDef<RSVP>[] = [
   {
@@ -30,17 +32,31 @@ export const columns: ColumnDef<RSVP>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="font-semibold"
+          className="group p-0 text-start font-semibold hover:bg-transparent hover:text-[#212122] transition-all"
         >
           <User className="mr-2 h-4 w-4" />
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 h-4 w-4 group-hover:scale-110 transition-all" />
         </Button>
       );
     },
     cell: ({ row }) => {
       const name = row.getValue("full_name") as string;
-      return <div className="font-medium text-secondary">{name}</div>;
+      const isVerified = row.original.is_verified_guest;
+      return (
+        <div className="flex items-center gap-2">
+          <div className="font-medium text-[#383539]">{name}</div>
+          {/* {isVerified && (
+            <Badge
+              variant="outline"
+              className="bg-green-50 text-green-700 border-green-200"
+            >
+              <CheckCircle className="h-3 w-3 mr-1" />
+              Verified
+            </Badge>
+          )} */}
+        </div>
+      );
     },
   },
   {
@@ -50,11 +66,11 @@ export const columns: ColumnDef<RSVP>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="font-semibold"
+          className="group p-0 text-start font-semibold hover:bg-transparent hover:text-[#212122] transition-all"
         >
           <Mail className="mr-2 h-4 w-4" />
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Email Used for RSVP
+          <ArrowUpDown className="ml-2 h-4 w-4 group-hover:scale-110 transition-all" />
         </Button>
       );
     },
@@ -63,12 +79,12 @@ export const columns: ColumnDef<RSVP>[] = [
       return email ? (
         <a
           href={`mailto:${email}`}
-          className="text-primary hover:underline hover:text-primary/80 transition-colors"
+          className="text-[#383539]/45 hover:underline hover:text-[#383539]/90 transition-all"
         >
           {email}
         </a>
       ) : (
-        <span className="text-gray-400 italic">No email</span>
+        <span className="text-[#383539]/45 italic">No email</span>
       );
     },
   },
@@ -85,46 +101,85 @@ export const columns: ColumnDef<RSVP>[] = [
               : "bg-red-100 text-red-800 hover:bg-red-100"
           }
         >
-          {attendance === "attending" ? "Attending" : "Not Attending"}
+          {attendance === "attending" ? (
+            <>
+              <CheckCircle className="h-3 w-3 mr-1" />
+              Attending
+            </>
+          ) : (
+            <>
+              <XCircle className="h-3 w-3 mr-1" />
+              Not Attending
+            </>
+          )}
         </Badge>
       );
     },
   },
-  {
-    accessorKey: "guests",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="font-semibold"
-        >
-          Guests
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const guests = row.getValue("guests") as number;
-      const attendance = row.getValue("attendance") as string;
+  // {
+  //   accessorKey: "guest_list_id",
+  //   header: "Guest Status",
+  //   cell: ({ row }) => {
+  //     const guestListId = row.original.guest_list_id;
+  //     const isVerified = row.original.is_verified_guest;
 
-      if (attendance === "not-attending") {
-        return <span className="text-gray-400">—</span>;
+  //     return (
+  //       <div className="flex items-center gap-2">
+  //         {isVerified ? (
+  //           <Badge
+  //             variant="outline"
+  //             className="bg-blue-50 text-blue-700 border-blue-200"
+  //           >
+  //             On Guest List
+  //           </Badge>
+  //         ) : (
+  //           <Badge
+  //             variant="outline"
+  //             className="bg-gray-50 text-gray-700 border-gray-200"
+  //           >
+  //             Walk-in
+  //           </Badge>
+  //         )}
+  //       </div>
+  //     );
+  //   },
+  // },
+  {
+    accessorKey: "rsvp_for_guest_id",
+    header: "RSVP Details",
+    cell: ({ row }) => {
+      const rsvpForGuestId = row.original.rsvp_for_guest_id;
+      const submittedByGuestId = row.original.submitted_by_guest_id;
+
+      // If the person RSVP'd for themselves
+      if (
+        rsvpForGuestId &&
+        submittedByGuestId &&
+        rsvpForGuestId === submittedByGuestId
+      ) {
+        return (
+          <span className="text-sm text-[#383539]/45 italic">Self RSVP</span>
+        );
       }
 
-      return (
-        <div className="flex items-center gap-2">
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              guests === 1
-                ? "bg-blue-100 text-blue-600"
-                : "bg-purple-100 text-purple-600"
-            }`}
+      // If someone else RSVP'd for this person
+      if (
+        rsvpForGuestId &&
+        submittedByGuestId &&
+        rsvpForGuestId !== submittedByGuestId
+      ) {
+        return (
+          <Badge
+            variant="outline"
+            className="bg-purple-50 text-purple-700 border-purple-200"
           >
-            {guests}
-          </div>
-        </div>
-      );
+            RSVP by others
+          </Badge>
+        );
+      }
+
+      // Walk-in guest (not verified)
+      return <span className="text-sm text-[#383539]/75 italic">Walk-in</span>;
     },
   },
   {
@@ -144,11 +199,11 @@ export const columns: ColumnDef<RSVP>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="font-semibold"
+          className="group p-0 text-start font-semibold hover:bg-transparent hover:text-[#212122] transition-all"
         >
           <Calendar className="mr-2 h-4 w-4" />
           Submitted
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 h-4 w-4 group-hover:scale-110 transition-all" />
         </Button>
       );
     },
@@ -163,7 +218,7 @@ export const columns: ColumnDef<RSVP>[] = [
               year: "numeric",
             })}
           </div>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-[#383539]/45">
             {date.toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
@@ -175,7 +230,7 @@ export const columns: ColumnDef<RSVP>[] = [
   },
 ];
 
-// For couples to view message via Modal
+// Message Cell Component
 function MessageCell({
   message,
   name,
@@ -186,7 +241,7 @@ function MessageCell({
   const [isOpen, setIsOpen] = useState(false);
 
   if (!message) {
-    return <span className="text-gray-400 italic">No message</span>;
+    return <span className="text-[#383539]/50 italic">No message</span>;
   }
 
   return (
@@ -195,7 +250,7 @@ function MessageCell({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 px-2 text-primary hover:text-primary/80 hover:bg-primary/10"
+          className="h-8 p-2 text-[#383539] hover:text-[#383539]/80 hover:bg-[#383539]/10 hover:scale-105 transition-all"
         >
           <Eye className="h-4 w-4 mr-1" />
           View
@@ -203,7 +258,7 @@ function MessageCell({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-secondary">
+          <DialogTitle className="text-[#383539]">
             Message from {name}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
@@ -213,9 +268,6 @@ function MessageCell({
         <div className="mt-4">
           <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
             <p className="text-gray-700 whitespace-pre-wrap">{message}</p>
-          </div>
-          <div className="mt-4 text-sm text-gray-500">
-            {message.length} characters
           </div>
         </div>
       </DialogContent>
