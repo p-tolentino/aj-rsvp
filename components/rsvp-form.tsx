@@ -273,7 +273,7 @@ export default function MultiStepRSVPForm() {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center mx-auto px-4 py-8 sm:py-12 md:py-16 bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
+    <section className="flex flex-col items-center justify-center mx-auto px-4 pt-8 sm:pt-12 md:pt-16 bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
       <div id="rsvp" className="w-full max-w-7xl">
         {/* Title */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">

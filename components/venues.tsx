@@ -1,4 +1,4 @@
-import { Church, Clock, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Timeline from "./timeline";
 
@@ -36,9 +36,9 @@ export default function Venues() {
 
           {/* Venue Details */}
           <div className="md:mt-10 lg:absolute lg:right-0 lg:bottom-0 lg:mb-8 lg:mr-8 xl:right-44 xl:bottom-32">
-            <div className="flex flex-col items-start space-y-3 sm:space-y-4 bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-lg lg:bg-transparent lg:backdrop-blur-none">
+            <div className="flex flex-col items-start space-y-3 sm:space-y-4 bg-transparent backdrop-blur-sm p-4 sm:p-6 rounded-lg lg:backdrop-blur-none">
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-                <Church className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#383539] flex-shrink-0" />
+                <MapPin className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#383539] flex-shrink-0" />
                 <span className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
                   Sacred Heart of Jesus, Don Jesus Blvd., Alabang Hills
                 </span>
@@ -79,7 +79,7 @@ export default function Venues() {
 
           {/* Venue Details */}
           <div className="mt-6 sm:mt-8 md:mt-10 lg:absolute lg:left-0 lg:bottom-0 lg:mb-8 lg:ml-8 xl:left-60 xl:bottom-32">
-            <div className="flex flex-col items-end space-y-3 sm:space-y-4 bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-lg lg:bg-transparent lg:backdrop-blur-none">
+            <div className="flex flex-col items-end space-y-3 sm:space-y-4 backdrop-blur-sm p-4 sm:p-6 rounded-lg bg-transparent lg:backdrop-blur-none">
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                 <span className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-right">
                   Brittany Palazzo, Daang Reyna, Las Piñas

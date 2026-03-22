@@ -118,10 +118,10 @@ export default function Timeline() {
 
       {/* Special Note */}
       <div className="text-center py-4 sm:py-6">
-        <h4 className="text-7xl 2xl:text-9xl font-beautifully-delicious mb-4 sm:mb-6">
+        <h4 className="text-8xl md:text-9xl font-beautifully-delicious mb-4 sm:mb-6">
           A Special Note
         </h4>
-        <p className="text-xl sm:text-2xl md:text-3xl italic px-4 sm:px-8 md:px-12">
+        <p className="text-xl md:text-2xl italic px-4 sm:px-8 md:px-12">
           We&apos;d appreciate it if you could stay until the end of the program
           — we&apos;ve prepared a little something special for everyone who
           joined us.
