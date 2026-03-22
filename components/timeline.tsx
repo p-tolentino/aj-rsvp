@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Separator } from "./ui/separator";
-import { VenueRoutes } from "./ui/venue-routes";
+import { VenueRoutes } from "./venue-routes";
 import { useState } from "react";
 
 const venueCoords: Record<number, [number, number]> = {

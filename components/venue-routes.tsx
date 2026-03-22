@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Map,
   MapMarker,
@@ -24,7 +24,7 @@ const start = {
   image: "/image-church.jpg",
   time: "07:00 AM - 10:30 AM",
   mapHref:
-    "https://www.google.com/maps/dir//Sacred+Heart+of+Jesus+Parish,+Don+Jesus+Blvd,+Cupang,+Muntinlupa,+Metro+Manila/@14.4029305,121.0063707,14z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d029b5a03d63:0x3255defb80fa4af5!2m2!1d121.0421069!2d14.4348041!3e2?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D",
+    "https://www.google.com/maps/dir//Sacred+Heart+of+Jesus+Parish,+Don+Jesus+Blvd,+Cupang,+Muntinlupa,+Metro+Manila/@14.4029305,121.0063707,14z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d029b5a03d63:0x3255defb80fa4af5!2m2!1d121.0421069!2d14.4348041!3e0?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D",
   externalHref: "https://www.facebook.com/shjpmunti/",
   lng: 121.04212114746923,
   lat: 14.434948,
@@ -55,7 +55,7 @@ const end = {
   image: "/image-reception.jpg",
   time: "10:30 AM - 11:00 PM",
   mapHref:
-    "https://www.google.com/maps/dir/Sacred+Heart+of+Jesus+Parish,+Don+Jesus+Blvd,+Cupang,+Muntinlupa,+Metro+Manila/Brittany+Palazzo,+Daang+Reyna,+Almanza+Dos,+Las+Piñas,+Metro+Manila/@14.4028863,120.9857705,13z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x3397d029b5a03d63:0x3255defb80fa4af5!2m2!1d121.0421069!2d14.4348041!1m5!1m1!1s0x3397d147bed25779:0xbdcaa3786692ff!2m2!1d121.0086585!2d14.3704009!3e2?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D",
+    "https://www.google.com/maps/dir/Sacred+Heart+of+Jesus+Parish,+Don+Jesus+Blvd,+Cupang,+Muntinlupa,+Metro+Manila/Brittany+Palazzo,+Daang+Reyna,+Almanza+Dos,+Las+Piñas,+Metro+Manila/@14.4119515,120.9858198,13z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x3397d029b5a03d63:0x3255defb80fa4af5!2m2!1d121.0421069!2d14.4348041!1m5!1m1!1s0x3397d147bed25779:0xbdcaa3786692ff!2m2!1d121.0086585!2d14.3704009!3e0?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D",
   externalHref: "https://brittanypalazzo.com/",
   lng: 121.00865864876175,
   lat: 14.370409907200182,
@@ -84,12 +84,26 @@ function formatDistance(meters: number): string {
   return `${(meters / 1000).toFixed(1)} km`;
 }
 
+export const defaultCenter: [number, number] = [
+  121.03122948776966, 14.400500754238415,
+];
+
 export function VenueRoutes({ flyToTarget }: VenueRoutesProps) {
   const [routes, setRoutes] = useState<RouteData[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const mapRef = useRef<MapRef>(null);
+
+  const handleRouteClick = useCallback((index: number) => {
+    setSelectedIndex(index);
+
+    mapRef?.current?.flyTo({
+      center: defaultCenter,
+      zoom: 12,
+      duration: 1000,
+    });
+  }, []);
 
   useEffect(() => {
     if (!flyToTarget || !mapRef.current) return;
@@ -286,7 +300,7 @@ export function VenueRoutes({ flyToTarget }: VenueRoutesProps) {
                 key={index}
                 variant={isActive ? "default" : "secondary"}
                 size="sm"
-                onClick={() => setSelectedIndex(index)}
+                onClick={() => handleRouteClick(index)}
                 className={`justify-start gap-3 ${isActive ? "bg-[#383539]/50 text-white" : "bg-[#383539]/30 text-white"}`}
               >
                 <div className="flex items-center gap-1.5">

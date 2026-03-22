@@ -60,7 +60,7 @@ export default function Header() {
               handleLinkClick(e, href);
             }
           }}
-          className="text-sm font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
+          className="font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
         >
           {children}
         </Link>
@@ -71,7 +71,7 @@ export default function Header() {
     return (
       <Link
         href={href}
-        className="text-sm font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
+        className="font-medium text-[#383539] hover:text-[#383539]/65 transition-all hover:scale-105"
       >
         {children}
       </Link>
@@ -105,7 +105,7 @@ export default function Header() {
               )}
 
               <Link href="/#rsvp" className="inline-block">
-                <Button className="bg-[#383539] hover:bg-[#383539]/90 text-white text-sm px-4 py-2 transform transition-transform hover:scale-105">
+                <Button className="bg-[#383539] hover:bg-[#383539]/90 text-white px-4 py-2 transform transition-transform hover:scale-105">
                   RSVP Now
                 </Button>
               </Link>
@@ -115,7 +115,7 @@ export default function Header() {
               <Link href="/#rsvp">
                 <Button
                   size="sm"
-                  className="bg-[#383539] hover:bg-[#383539]/90 text-white text-xs px-3 py-1"
+                  className="bg-[#383539] hover:bg-[#383539]/90 text-white px-3 py-1"
                 >
                   RSVP
                 </Button>
@@ -155,7 +155,7 @@ export default function Header() {
                           }
                           closeMenu();
                         }}
-                        className="text-sm font-medium text-[#383539] py-2 hover:text-gray-500 transition-all hover:pl-2"
+                        className="font-medium text-[#383539] py-2 hover:text-gray-500 transition-all hover:pl-2"
                       >
                         {route.name}
                       </Link>
