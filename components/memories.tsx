@@ -34,10 +34,10 @@ export default function MemoryScrapbook() {
           </div>
         </div>
 
-        <div className="max-w-2xl mx-auto mt-12 relative px-2">
+        <div className="max-w-2xl mx-auto mt-12 relative px-20 sm:px-6 md:px-2">
           <div className="tape-effect"></div>
           <div className="bg-[#f5edd9]/95 p-6 shadow-lg">
-            <p className="text-center handwritten text-xl text-foreground">
+            <p className="text-center handwritten text-sm sm:text-lg md:text-xl text-foreground ">
               &quot;Every memory is a page in our story, and today we start a
               new chapter.&quot;
             </p>
