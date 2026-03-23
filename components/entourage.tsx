@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const pillars = [
   {
     title: "Fathers",
@@ -119,24 +123,40 @@ export default function Entourage() {
       <div id="entourage" className="max-w-7xl w-full">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
-            <h2 className="text-6xl md:text-8xl font-beautifully-delicious text-black px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-6xl md:text-8xl font-beautifully-delicious text-black px-4"
+            >
               The special people who make our celebration complete
-            </h2>
+            </motion.h2>
           </div>
         </div>
 
         <div className="space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16">
           {/* Our Pillars of Strength */}
           <div>
-            <div className="text-center mb-4 sm:mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-4 sm:mb-6"
+            >
               <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-semibold text-black mb-2">
                 Our Pillars of Strength
               </h3>
               <div className="w-20 sm:w-24 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-            </div>
+            </motion.div>
 
             {/* Parents */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
               className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8`}
             >
               <div className="flex flex-col text-center sm:text-end justify-center">
@@ -153,9 +173,13 @@ export default function Entourage() {
                   </p>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
               className={`grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto text-base sm:text-lg md:text-xl lg:text-2xl`}
             >
               {/* The Groom's Side */}
@@ -191,19 +215,29 @@ export default function Entourage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Sponsors */}
           <div>
-            <div className="text-center mb-4 sm:mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-4 sm:mb-6"
+            >
               <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-semibold text-black mb-2">
                 To Stand as Witnesses to Our Vows
               </h3>
               <div className="w-20 sm:w-24 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
               className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8`}
             >
               {/* Ninongs */}
@@ -222,7 +256,7 @@ export default function Entourage() {
                   </p>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Entourage */}
@@ -231,14 +265,26 @@ export default function Entourage() {
             <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
               {/* Men of Honor */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-lg sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                     Men of Honor
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {entourage[0].names.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -246,19 +292,31 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Groomsmen */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-lg sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                     Groomsmen
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {entourage[1].names.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -266,7 +324,7 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -274,14 +332,26 @@ export default function Entourage() {
             <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
               {/* Maids of Honor */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-lg sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                     Maids of Honor
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {entourage[2].names.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -289,19 +359,31 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Bridesmaids */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-lg sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                     Bridesmaids
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {entourage[3].names.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -309,21 +391,33 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
 
           {/* To Light Our Path of Life */}
           <div>
-            <div className="text-center mb-3 sm:mb-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-3 sm:mb-4"
+            >
               <h4 className="text-lg sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                 To Light Our Path of Life
               </h4>
               <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-            </div>
+            </motion.div>
 
-            <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl"
+            >
               <div className="flex flex-col text-center justify-center">
                 {symbols.light.map((name, idx) => (
                   <p key={idx} className="text-black/90">
@@ -331,7 +425,7 @@ export default function Entourage() {
                   </p>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Symbols - 2 Columns */}
@@ -340,16 +434,27 @@ export default function Entourage() {
             <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
               {/* Veil */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
-                    To enfold us with veil to protect our{" "}
-                    <br className="hidden sm:block" />
-                    marriage in prayer and support.
+                    To enfold us with veil to protect our marriage in prayer and
+                    support.
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {symbols.veil.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -357,23 +462,35 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Faith */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To Carry the Symbol of Faith
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center text-black/90">
                     {symbols.faith}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -381,14 +498,26 @@ export default function Entourage() {
             <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
               {/* Cord */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To entwine us with Cord bound in unity and accountability.
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center">
                     {symbols.cord.map((name, idx) => (
                       <p key={idx} className="text-black/90">
@@ -396,23 +525,35 @@ export default function Entourage() {
                       </p>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Treasure */}
               <div>
-                <div className="text-center mb-3 sm:mb-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="text-center mb-3 sm:mb-4"
+                >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To Carry the Symbol of Treasure
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-                </div>
+                </motion.div>
 
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.7 }}
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                >
                   <div className="flex flex-col text-center justify-center text-black/90">
                     {symbols.treasure}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -421,30 +562,54 @@ export default function Entourage() {
           <div className="space-y-8 sm:space-y-10 md:space-y-12">
             {/* Commitment */}
             <div>
-              <div className="text-center mb-3 sm:mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="text-center mb-3 sm:mb-4"
+              >
                 <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                   To Carry the Symbol of Lifelong Commitment.
                 </h4>
                 <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-              </div>
+              </motion.div>
 
-              <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="text-base sm:text-lg md:text-xl lg:text-2xl"
+              >
                 <div className="flex flex-col text-center justify-center text-black/90">
                   {symbols.commitment}
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Joy */}
             <div>
-              <div className="text-center mb-3 sm:mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="text-center mb-3 sm:mb-4"
+              >
                 <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                   To Sprinkle Our Path With Joy
                 </h4>
                 <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
-              </div>
+              </motion.div>
 
-              <div className="text-base sm:text-lg md:text-xl lg:text-2xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6 }}
+                className="text-base sm:text-lg md:text-xl lg:text-2xl"
+              >
                 <div className="flex flex-col text-center justify-center">
                   {symbols.joy.map((name, idx) => (
                     <p key={idx} className="text-black/90">
@@ -452,7 +617,7 @@ export default function Entourage() {
                     </p>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

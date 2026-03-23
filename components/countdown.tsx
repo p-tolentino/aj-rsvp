@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "./ui/card";
+import { motion } from "framer-motion";
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState({
@@ -37,21 +38,34 @@ export default function Countdown() {
     <div className="w-full">
       <Card className="flex flex-col items-center justify-center w-full border-none shadow-none bg-transparent text-center">
         <CardHeader className="p-4 sm:p-6 md:p-8 lg:p-10">
-          <h2 className="text-6xl sm:text-7xl lg:text-9xl font-beautifully-delicious text-black text-center">
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-6xl sm:text-7xl lg:text-9xl font-beautifully-delicious text-black text-center"
+          >
             Counting down to our special day
-          </h2>
+          </motion.h2>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 md:p-8 bg-transparent w-full text-center max-w-3xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
-            {Object.entries(timeLeft).map(([unit, value]) => (
-              <div key={unit} className="text-center">
+            {Object.entries(timeLeft).map(([unit, value], index) => (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                key={unit}
+                className="text-center"
+              >
                 <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-black">
                   {value.toString().padStart(2, "0")}
                 </div>
                 <div className="text-xs sm:text-sm uppercase tracking-wider text-black/60 mt-1 sm:mt-2">
                   {unit}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
           {/* <p className="text-center text-black/70 mt-6 sm:mt-8 text-sm sm:text-base">

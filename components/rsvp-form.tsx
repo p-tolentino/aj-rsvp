@@ -46,6 +46,7 @@ import {
 import { verifyGuestName, submitCompleteRSVP } from "@/app/actions";
 import Logo from "./logo";
 import { deadline } from "./faqs";
+import { motion } from "framer-motion";
 
 type GuestInfo = {
   id: string;
@@ -279,33 +280,57 @@ export default function MultiStepRSVPForm() {
         {/* Title */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 md:mb-8">
-            <h2 className="text-8xl md:text-[180px] leading-none font-beautifully-delicious text-black px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-8xl md:text-[180px] leading-none font-beautifully-delicious text-black px-4"
+            >
               répondez s&apos;il vous plaît,
-            </h2>
+            </motion.h2>
           </div>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-black max-w-2xl mx-auto px-4">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-black max-w-2xl mx-auto px-4"
+          >
             To help us prepare thoughtfully, we kindly ask that you complete
             your RSVP on or before
             <span className="font-bold"> {deadline}.</span>
-          </p>
+          </motion.p>
         </div>
 
         <div className="flex flex-col lg:flex-row justify-center gap-6 lg:gap-8 w-full px-4">
           {/* Notes */}
           <div className="flex flex-col space-y-4 w-full lg:w-[350px] text-center lg:text-start justify-center mb-6 lg:mb-0">
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-sm sm:text-base md:text-lg lg:text-xl"
+            >
               For verification, the name on this invitation will be exactly
               matched with our website&apos;s guest list, together with the
               corresponding seat.
-            </p>
+            </motion.p>
 
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-sm sm:text-base md:text-lg lg:text-xl"
+            >
               The final list will be provided to our wedding coordinator ahead
               of time. We sincerely ask for your kind cooperation in confirming
               your attendance in advance. Your response truly means the world to
               us — thank you for being part of this very special moment in our
               lives.
-            </p>
+            </motion.p>
           </div>
 
           {/* Actual Form */}

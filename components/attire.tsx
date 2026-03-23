@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Separator } from "./ui/separator";
@@ -38,15 +41,27 @@ export default function Attire() {
 
         {/* Title Section */}
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-12 md:mt-16 mb-6 sm:mb-8 md:mb-10 w-full max-w-7xl mx-auto justify-center items-center">
-          <h2 className="text-7xl md:text-8xl xl:text-[180px] text-center lg:text-left font-beautifully-delicious text-black leading-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-7xl md:text-8xl xl:text-[180px] text-center lg:text-left font-beautifully-delicious text-black leading-tight"
+          >
             Wedding Attire
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-center lg:text-left max-w-xl text-black">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-base sm:text-lg md:text-xl text-center lg:text-left max-w-xl text-black"
+          >
             We kindly invite our dear guests to come in formal attire — if
             it&apos;s comfortable and convenient. Please don&apos;t feel
             pressured; your presence and love are what truly make our
             celebration complete.
-          </p>
+          </motion.p>
         </div>
 
         {/* Content Section */}
@@ -56,7 +71,13 @@ export default function Attire() {
             <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
               {/* Ladies */}
               <div className="flex flex-col gap-4">
-                <div className="text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="text-center"
+                >
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-2">
                     Ladies
                   </h3>
@@ -64,11 +85,19 @@ export default function Attire() {
                     Formal attire. Ladies in maxi to floor-length dresses are
                     warmly encouraged.
                   </p>
-                </div>
+                </motion.div>
                 <div className="flex justify-center">
                   <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 flex-wrap">
                     {colorReferences.ladies.map((colorRef, index) => (
-                      <ColorSwatch key={index} {...colorRef} />
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.2 }}
+                      >
+                        <ColorSwatch key={index} {...colorRef} />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -79,19 +108,37 @@ export default function Attire() {
               {/* Gentlemen */}
               <div className="flex flex-col gap-4">
                 <div className="text-center">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-2">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-2"
+                  >
                     Gentlemen
-                  </h3>
-                  <p className="text-base sm:text-lg md:text-xl">
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="text-base sm:text-lg md:text-xl"
+                  >
                     Classic black suits with white long sleeves
-                  </p>
+                  </motion.p>
                 </div>
                 <div className="flex justify-center">
-                  <div className="flex justify-center">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 }}
+                    className="flex justify-center"
+                  >
                     {colorReferences.gentlemen.map((colorRef, index) => (
                       <ColorSwatch key={index} {...colorRef} />
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>

@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 
@@ -45,7 +48,13 @@ export default function FAQs() {
       >
         {/* Heading */}
         <div className="flex flex-col text-center lg:text-start lg:sticky lg:top-24 lg:self-start mb-8 lg:mb-0 lg:w-1/3">
-          <h1 className="text-8xl xl:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-8xl xl:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious"
+          >
             <span className="block">Frequently</span>
             <span className="block -mt-2 sm:-mt-3 md:-mt-4 lg:-mt-6 xl:-mt-8 2xl:-mt-12">
               asked
@@ -53,7 +62,7 @@ export default function FAQs() {
             <span className="block -mt-2 sm:-mt-3 md:-mt-4 lg:-mt-6 xl:-mt-8 2xl:-mt-16">
               questions
             </span>
-          </h1>
+          </motion.h1>
         </div>
 
         {/* FAQ Items */}
@@ -65,7 +74,13 @@ export default function FAQs() {
                   {/* FAQ Item */}
                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 md:gap-8">
                     {/* Image */}
-                    <div className="flex justify-center items-center flex-shrink-0">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex justify-center items-center flex-shrink-0"
+                    >
                       <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64">
                         <Image
                           src={item.imageUrl}
@@ -76,17 +91,29 @@ export default function FAQs() {
                           className="w-full h-full object-contain"
                         />
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Content */}
                     <div className="flex-1 text-center sm:text-left">
                       {/* Question */}
-                      <div className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3 sm:mb-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3 sm:mb-4"
+                      >
                         {item.question}
-                      </div>
+                      </motion.div>
 
                       {/* Answer */}
-                      <div className="text-sm sm:text-base md:text-lg lg:text-xl flex flex-col space-y-3 sm:space-y-4 text-gray-700">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="text-sm sm:text-base md:text-lg lg:text-xl flex flex-col space-y-3 sm:space-y-4 text-gray-700"
+                      >
                         {!item.multipleLineAnswer ? (
                           <p>{item.answer}</p>
                         ) : (
@@ -94,7 +121,7 @@ export default function FAQs() {
                             <p key={idx}>{answer}</p>
                           ))
                         )}
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
 

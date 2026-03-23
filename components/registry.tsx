@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Registry() {
   return (
     <section className="py-8 sm:py-12 md:py-16 bg-[url(/bg-invitation-registry.png)] bg-cover bg-center overflow-hidden w-full">
@@ -9,7 +13,13 @@ export default function Registry() {
           {/* Sticky Note */}
           <div className="relative -rotate-3 transform transition-transform">
             {/* Note Background */}
-            <div className="bg-[#FFF9E8] rounded-lg shadow-2xl p-8 sm:p-10 md:p-12 lg:p-16 border border-amber-200/50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#FFF9E8] rounded-lg shadow-2xl p-8 sm:p-10 md:p-12 lg:p-16 border border-amber-200/50"
+            >
               {/* Fold/tape effect */}
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-[#FFE8B5] rounded-b-lg shadow-sm"></div>
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-3 bg-[#FFE0A0] rounded-b-lg"></div>
@@ -41,7 +51,7 @@ export default function Registry() {
 
               {/* Decorative lines */}
               <div className="absolute bottom-4 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-300/30 to-transparent"></div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -5,6 +5,8 @@ import { Separator } from "./ui/separator";
 import { VenueRoutes } from "./venue-routes";
 import { useState } from "react";
 
+import { motion } from "framer-motion";
+
 const venueCoords: Record<number, [number, number]> = {
   0: [121.04212114746923, 14.434948], // Church
   1: [121.00865864876175, 14.370409907200182], // Reception
@@ -44,9 +46,15 @@ export default function Timeline() {
   return (
     <div id="timeline" className="flex flex-col items-center h-full">
       <div className="text-center px-4 sm:px-6 md:px-8 mb-8 sm:mb-12 md:mb-16">
-        <h1 className="text-8xl md:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="text-8xl md:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious"
+        >
           The Itinerary
-        </h1>
+        </motion.h1>
       </div>
       <div className="flex flex-col items-center md:flex-row w-full justify-around px-10">
         {/* Itinerary */}
@@ -60,7 +68,13 @@ export default function Timeline() {
                   className="flex flex-col w-full group"
                 >
                   {/* Timeline Item */}
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 md:gap-8 group-hover:scale-105 group-hover:cursor-pointer transition-all">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 md:gap-8 group-hover:scale-105 group-hover:cursor-pointer transition-all"
+                  >
                     {/* Image */}
                     <div className="flex justify-center items-center flex-shrink-0">
                       <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
@@ -91,7 +105,7 @@ export default function Timeline() {
                         </div>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Divider */}
                   {index !== timelineItems.length - 1 && (
@@ -109,23 +123,41 @@ export default function Timeline() {
         </div>
 
         {/* Map */}
-        <div className="flex items-center w-full md:w-1/2 bg-[#f5f5f5] rounded-lg shadow-lg">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center w-full md:w-1/2 bg-[#f5f5f5] rounded-lg shadow-lg"
+        >
           <div className="h-[300px] sm:h-[450px] md:h-[550px] p-6 w-full rounded-lg flex items-center justify-center">
             <VenueRoutes flyToTarget={flyToTarget} />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Special Note */}
       <div className="text-center py-4 sm:py-6">
-        <h4 className="text-8xl md:text-9xl font-beautifully-delicious mb-4 sm:mb-6">
+        <motion.h4
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-8xl md:text-9xl font-beautifully-delicious mb-4 sm:mb-6"
+        >
           A Special Note
-        </h4>
-        <p className="text-xl md:text-2xl italic px-4 sm:px-8 md:px-12">
+        </motion.h4>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-xl md:text-2xl italic px-4 sm:px-8 md:px-12"
+        >
           We&apos;d appreciate it if you could stay until the end of the program
           — we&apos;ve prepared a little something special for everyone who
           joined us.
-        </p>
+        </motion.p>
       </div>
     </div>
   );

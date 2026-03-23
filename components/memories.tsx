@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function MemoryScrapbook() {
@@ -8,7 +11,13 @@ export default function MemoryScrapbook() {
     >
       <div className="">
         <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center w-full h-full">
-          <div className="sm:-mt-5 md:relative md:left-24 md:-mt-48">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="sm:-mt-5 md:relative md:left-24 md:-mt-48"
+          >
             <div className="flex justify-end">
               <Image
                 src="/image-memories-1.png"
@@ -19,22 +28,34 @@ export default function MemoryScrapbook() {
                 preload
               />
             </div>
-          </div>
-          <div className="sm:mt-0 md:relative md:mt-64 md:right-24">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="sm:mt-0 md:relative md:mt-64 md:right-24"
+          >
             <div className="flex justify-start">
               <Image
                 src="/image-memories-2.png"
                 alt="Korea 1"
                 height={1000}
                 width={1000}
-                className="w-50 h-50 rotate-12 object-contain"
+                className="w-50 h-50 rotate-3 md:rotate-12 object-contain"
                 preload
               />
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="max-w-2xl mx-auto mt-12 relative px-20 sm:px-6 md:px-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="max-w-2xl mx-auto mt-12 relative px-20 sm:px-6 md:px-2"
+        >
           <div className="tape-effect"></div>
           <div className="bg-[#f5edd9]/95 p-6 shadow-lg">
             <p className="text-center handwritten text-sm sm:text-lg md:text-xl text-foreground ">
@@ -42,7 +63,7 @@ export default function MemoryScrapbook() {
               new chapter.&quot;
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

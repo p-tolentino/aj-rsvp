@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Invitation() {
@@ -8,18 +11,30 @@ export default function Invitation() {
     >
       <div className="flex flex-col sm:relative h-full w-full items-center justify-center">
         {/* Text */}
-        <div className="block sm:absolute -rotate-12 left-16 -top-8 sm:left-14 md:left-28 lg:left-28 xl:left-44 xl:top-0 2xl:left-96 z-9999">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="block sm:absolute -rotate-12 left-16 -top-8 sm:left-14 md:left-28 lg:left-28 xl:left-44 xl:top-0 2xl:left-96 z-9999"
+        >
           <h1 className="flex flex-col text-start text-8xl lg:text-[150px] mb-2 drop-shadow-md font-beautifully-delicious">
             <span>Celebration</span>
             <span className="-mt-10 lg:-mt-14">in the heart</span>
             <span className="-mt-10 lg:-mt-14">of The</span>
             <span className="-mt-10 lg:-mt-14">Philippines</span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* Letter Image */}
 
-        <div className="flex items-center justify-center h-full w-full">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="flex items-center justify-center h-full w-full"
+        >
           <Image
             src="/image-invitation.png"
             alt="Letter"
@@ -28,12 +43,18 @@ export default function Invitation() {
             preload
             className="w-50 h-50"
           />
-        </div>
+        </motion.div>
 
         {/* Invitation Element */}
 
         <div className="block sm:absolute right-4 sm:right-8 md:right-12 -bottom-24 sm:bottom-8 md:bottom-12 lg:right-40 lg:bottom-20 xl:right-52 2xl:right-[480px] z-10 rotate-3 sm:rotate-8 md:rotate-10 lg:rotate-12">
-          <div className="bg-[#f5edd9] shadow-xl rounded-lg w-[260px] h-[280px] sm:w-[260px] sm:h-[320px] md:w-[300px] md:h-[400px] p-4 sm:p-5 md:p-6 border border-amber-200/50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="bg-[#f5edd9] shadow-xl w-[260px] h-[280px] sm:w-[260px] sm:h-[320px] md:w-[300px] md:h-[400px] p-4 sm:p-5 md:p-6 border border-amber-200/50"
+          >
             {/* Fold/tape effect */}
             <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-10 h-5 bg-[#FFE8B5] rounded-b-lg shadow-sm"></div>
             <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-6 h-3 bg-[#FFE0A0] rounded-b-lg"></div>
@@ -62,7 +83,7 @@ export default function Invitation() {
 
             {/* Decorative bottom line */}
             <div className="absolute bottom-3 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-300/30 to-transparent"></div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
