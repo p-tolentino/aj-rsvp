@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Separator } from "./ui/separator";
-import { deadline } from "./rsvp-form";
+
+export const deadline = "April 20, 2026";
 
 const faqs = [
   {

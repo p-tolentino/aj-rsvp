@@ -45,6 +45,7 @@ import {
 } from "@/lib/form-validation";
 import { verifyGuestName, submitCompleteRSVP } from "@/app/actions";
 import Logo from "./logo";
+import { deadline } from "./faqs";
 
 type GuestInfo = {
   id: string;
@@ -55,8 +56,6 @@ type GuestInfo = {
 };
 
 type RsvpStep = 1 | 2 | 3 | 4;
-
-export const deadline = "April 20, 2026";
 
 export default function MultiStepRSVPForm() {
   const router = useRouter();
@@ -247,8 +246,8 @@ export default function MultiStepRSVPForm() {
 
   if (submitted) {
     return (
-      <section className="flex flex-col items-center justify-center mx-auto px-4 py-8 sm:py-12 md:py-16 bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
-        <div className="w-full max-w-7xl">
+      <section className="flex flex-col items-center justify-center mx-auto px-4 py-8 sm:py-12 md:py-16 overflow-hidden bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
+        <div className="w-full max-w-7xl z-0">
           <Card className="border-[#212122]/20 max-w-2xl mx-auto animate-fade-in">
             <CardContent className="p-6 sm:p-8 md:p-12 text-center">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
@@ -267,14 +266,16 @@ export default function MultiStepRSVPForm() {
             </CardContent>
           </Card>
         </div>
-        <Logo />
+        <div className="w-screen">
+          <Logo />
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="flex flex-col items-center justify-center mx-auto px-4 pt-8 sm:pt-12 md:pt-16 bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
-      <div id="rsvp" className="w-full max-w-7xl">
+    <section className="flex flex-col items-center justify-center mx-auto px-4 pt-8 sm:pt-12 md:pt-16 overflow-hidden bg-[url(/bg-playlist-rsvp.png)] bg-cover bg-center w-full">
+      <div id="rsvp" className="w-full max-w-7xl z-0">
         {/* Title */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 md:mb-8">
@@ -310,14 +311,14 @@ export default function MultiStepRSVPForm() {
           {/* Actual Form */}
           <Card className="border-[#212122]/20 shadow-lg bg-card-subtle w-full max-w-2xl mx-auto">
             <CardHeader className="text-center space-y-3 sm:space-y-4 pb-4 sm:pb-6 px-4 sm:px-6">
-              <div className="space-y-2">
+              <div className="space-y-2 ">
                 <CardTitle className="text-xl sm:text-2xl md:text-3xl font-serif font-semibold text-[#212122]">
                   {currentStep === 1 && "RSVP"}
                   {currentStep === 2 && "Who Are You RSVPing For?"}
                   {currentStep === 3 && "Confirm Your Attendance"}
                   {currentStep === 4 && "Complete Your RSVP"}
                 </CardTitle>
-                <CardDescription className="text-sm sm:text-base md:text-lg flex flex-col">
+                <CardDescription className="text-sm sm:text-base md:text-lg flex flex-col text-[#212122]">
                   {currentStep === 1 && "Please enter your name to get started"}
                   {currentStep === 2 &&
                     "Select all guests you'd like to RSVP for"}
@@ -750,7 +751,9 @@ export default function MultiStepRSVPForm() {
           </Card>
         </div>
       </div>
-      <Logo />
+      <div className="w-screen">
+        <Logo />
+      </div>
     </section>
   );
 }

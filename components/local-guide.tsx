@@ -149,7 +149,7 @@ export default function LocalGuide() {
               >
                 <div className="flex items-center gap-4">
                   <div>
-                    <div className="text-6xl md:text-9xl font-beautifully-delicious font-semibold text-foreground">
+                    <div className="text-6xl md:text-9xl font-beautifully-delicious text-foreground">
                       {category.category}
                     </div>
                     <div className="h-1 w-24 bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full mt-2"></div>
