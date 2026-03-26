@@ -82,6 +82,7 @@ type SubmitRSVPData = {
   last_name: string;
   email: string;
   attendance: "attending" | "not-attending";
+  about_me: string | null;
   message: string | null;
   guest_list_id: string | null;
   selected_guest_ids: string[];
@@ -126,6 +127,7 @@ export async function submitCompleteRSVP(
         full_name: guest.full_name,
         email: data.email,
         attendance: data.attendance,
+        about_me: data.about_me,
         message: data.message,
         rsvp_for_guest_id: guest.id,
         submitted_by_guest_id: data.submitter_guest_id, // Track who submitted
@@ -169,6 +171,7 @@ export async function submitCompleteRSVP(
         full_name: `${data.first_name} ${data.last_name}`,
         email: data.email,
         attendance: data.attendance,
+        about_me: data.about_me,
         message: data.message,
         rsvp_for_guest_id: data.submitter_guest_id,
         submitted_by_guest_id: data.submitter_guest_id,
@@ -229,5 +232,164 @@ export async function getAllRSVPs() {
   } catch (error) {
     console.error("Error fetching all RSVPs:", error);
     return { success: false, error: "Failed to fetch RSVPs" };
+  }
+}
+
+export interface Guest {
+  full_name: string;
+  group_id: string;
+  first_name?: string;
+  last_name?: string;
+  max_guests?: number;
+}
+
+export async function uploadGuestList(formData: FormData) {
+  try {
+    const file = formData.get("file") as File;
+
+    if (!file) {
+      return { error: "No file provided" };
+    }
+
+    if (!file.name.endsWith(".csv")) {
+      return { error: "Only CSV files are allowed" };
+    }
+
+    // Parse CSV file
+    const text = await file.text();
+    const lines = text.split("\n");
+    const headers = lines[0]
+      .toLowerCase()
+      .split(",")
+      .map((h) => h.trim());
+
+    // Validate required columns
+    const requiredColumns = ["first_name", "last_name", "group_id"];
+    const missingColumns = requiredColumns.filter(
+      (col) => !headers.includes(col),
+    );
+
+    if (missingColumns.length > 0) {
+      return {
+        error: `Missing required columns: ${missingColumns.join(", ")}. Required columns: first_name, last_name, group_id`,
+      };
+    }
+
+    // Parse data rows
+    const uploadedGuests: Guest[] = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+
+      const values = lines[i].split(",").map((v) => v.trim());
+      const guest: any = {};
+
+      headers.forEach((header, index) => {
+        guest[header] = values[index] || "";
+      });
+
+      // Skip rows with missing first and last names
+      if (!guest.first_name || !guest.last_name) {
+        console.log(`Skipping row ${i + 1}: missing required fields`);
+        continue;
+      }
+
+      // Combine first_name and last_name to create full_name
+      const fullName = `${guest.first_name} ${guest.last_name}`.trim();
+
+      uploadedGuests.push({
+        full_name: fullName,
+        group_id: guest.group_id,
+        first_name: guest.first_name,
+        last_name: guest.last_name,
+      });
+    }
+
+    if (uploadedGuests.length === 0) {
+      return {
+        error:
+          "No valid data found in CSV. Please ensure each row has first_name, last_name, and group_id.",
+      };
+    }
+
+    // Calculate max_guests for each group_id
+    const groupCounts: Record<string, number> = {};
+    uploadedGuests.forEach((guest) => {
+      groupCounts[guest.group_id] =
+        guest.group_id !== "" ? (groupCounts[guest.group_id] || 0) + 1 : 1;
+    });
+
+    // Assign max_guests to each guest based on their group_id count
+    uploadedGuests.forEach((guest) => {
+      guest.max_guests = groupCounts[guest.group_id];
+    });
+
+    // Get Supabase client
+    const supabase = await createClient();
+
+    // Fetch existing guests
+    const { data: existingGuests, error: fetchError } = await supabase
+      .from("guest_list")
+      .select("full_name, group_id");
+
+    if (fetchError) {
+      console.error("Error fetching existing guests:", fetchError);
+      return { error: "Failed to fetch existing guests" };
+    }
+
+    // Create a Set of existing guest identifiers (full_name + group_id combination)
+    const existingGuestKeys = new Set(
+      existingGuests?.map(
+        (guest) => `${guest.full_name.toLowerCase()}|${guest.group_id}`,
+      ) || [],
+    );
+
+    // Filter out guests that already exist in the database based on full_name and group_id
+    const newGuests = uploadedGuests.filter((guest) => {
+      const key = `${guest.full_name.toLowerCase()}|${guest.group_id}`;
+      return !existingGuestKeys.has(key);
+    });
+
+    if (newGuests.length === 0) {
+      return {
+        message:
+          "No new guests to add. All guests from the CSV already exist in the database.",
+        added: 0,
+        total: uploadedGuests.length,
+      };
+    }
+
+    // Prepare the data for insertion (only need full_name and group_id for the database)
+    const guestsToInsert = newGuests.map((guest) => ({
+      first_name: guest.first_name,
+      last_name: guest.last_name,
+      group_id: guest.group_id,
+      max_guests: guest.max_guests,
+    }));
+
+    // Insert new guests
+    const { data: insertedGuests, error: insertError } = await supabase
+      .from("guest_list")
+      .insert(guestsToInsert)
+      .select();
+
+    if (insertError) {
+      console.error("Error inserting guests:", insertError);
+      return { error: "Failed to add new guests" };
+    }
+
+    // Revalidate the dashboard path to refresh data
+    revalidatePath("/guests");
+
+    return {
+      success: true,
+      message: `Successfully added ${insertedGuests?.length} new guest(s) to the list.`,
+      added: insertedGuests?.length || 0,
+      skipped: uploadedGuests.length - (insertedGuests?.length || 0),
+      total: uploadedGuests.length,
+    };
+  } catch (error) {
+    console.error("Error processing guest list upload:", error);
+    return { error: "Failed to process guest list upload" };
   }
 }

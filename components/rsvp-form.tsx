@@ -187,6 +187,7 @@ export default function MultiStepRSVPForm() {
         last_name: step1Data.last_name,
         email: data.email,
         attendance: data.attendance,
+        about_me: data.about_me || null,
         message: data.message || null,
         guest_list_id: verifiedGuest?.id || null,
         selected_guest_ids: step2Data?.selected_guest_ids || [],
@@ -693,6 +694,35 @@ export default function MultiStepRSVPForm() {
                       )}
                     />
 
+                    {/* About you */}
+                    {attendance === "attending" && (
+                      <FormField
+                        control={step3Form.control}
+                        name="about_me"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
+                              About you <span className="text-red-500"> *</span>
+                            </FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder={`Kindly share something unique, interesting, or little-known about yourself—perhaps a fun fact, a hidden talent, or something not many people know about you.`}
+                                className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
+                                {...field}
+                                disabled={isSubmitting}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <div className="flex justify-between text-[10px] sm:text-xs italic text-gray-400 mt-1">
+                              <span>Max 500 characters</span>
+                              <span>{field.value?.length || 0}/500</span>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
                     {/* Message */}
                     <FormField
                       control={step3Form.control}
@@ -708,11 +738,7 @@ export default function MultiStepRSVPForm() {
                           </FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder={`Share your well wishes${
-                                attendance === "attending"
-                                  ? `, song requests, or dietary restrictions`
-                                  : ""
-                              }...`}
+                              placeholder={`Kindly share a special memory you’ve had with either one of us, or together with both of us....`}
                               className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
                               {...field}
                               disabled={isSubmitting}

@@ -26,6 +26,11 @@ export const Step3Schema = z.object({
   attendance: z.enum(["attending", "not-attending"], {
     message: "Please choose an option.",
   }),
+  about_me: z
+    .string()
+    .max(500, { message: "Message must be less than 500 characters" })
+    .optional()
+    .or(z.literal("")),
   message: z
     .string()
     .max(500, { message: "Message must be less than 500 characters" })

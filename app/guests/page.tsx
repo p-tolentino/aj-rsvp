@@ -1,23 +1,27 @@
-import React from "react";
 import AdminDashboard from "./components/admin-dashboard";
 import { createClient } from "@/lib/supabase/server";
 
-export interface AdminProps {
-  [key: string]: string;
-}
-
-const Admin: React.FC<AdminProps> = async ({}) => {
+const Admin = async () => {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  // Fetch RSVPs
+  const { data: rsvps, error: rsvpError } = await supabase
     .from("rsvps")
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) throw error;
+  if (rsvpError) throw rsvpError;
+
+  // Fetch guest list
+  const { data: guestList, error: guestError } = await supabase
+    .from("guest_list")
+    .select("*")
+    .order("first_name", { ascending: true });
+
+  if (guestError) throw guestError;
 
   return (
     <div className="bg-[url(/bg-hero.png)] bg-contain bg-center">
-      <AdminDashboard rsvps={data} />
+      <AdminDashboard rsvps={rsvps} guestList={guestList} />
     </div>
   );
 };

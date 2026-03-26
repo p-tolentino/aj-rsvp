@@ -183,13 +183,23 @@ export const columns: ColumnDef<RSVP>[] = [
     },
   },
   {
+    accessorKey: "about_me",
+    header: "Guest Info",
+    cell: ({ row }) => {
+      const about_guest = row.getValue("about_me") as string;
+      const name = row.getValue("full_name") as string;
+
+      return <DialogCell text={about_guest} name={name} type="about_guest" />;
+    },
+  },
+  {
     accessorKey: "message",
     header: "Message",
     cell: ({ row }) => {
       const message = row.getValue("message") as string;
       const name = row.getValue("full_name") as string;
 
-      return <MessageCell message={message} name={name} />;
+      return <DialogCell text={message} name={name} type="message" />;
     },
   },
   {
@@ -231,16 +241,18 @@ export const columns: ColumnDef<RSVP>[] = [
 ];
 
 // Message Cell Component
-function MessageCell({
-  message,
+function DialogCell({
+  text,
   name,
+  type,
 }: {
-  message: string | null;
+  text: string | null;
   name: string;
+  type: "message" | "about_guest";
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!message) {
+  if (type === "message" && !text) {
     return <span className="text-[#383539]/50 italic">No message</span>;
   }
 
@@ -259,15 +271,17 @@ function MessageCell({
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-[#383539]">
-            Message from {name}
+            {type === "message" ? `Message from ${name}` : `About ${name}`}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            View the message left by the guest
+            {type === "message"
+              ? `View the message left by the guest`
+              : `View details about the guest`}
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
           <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
-            <p className="text-gray-700 whitespace-pre-wrap">{message}</p>
+            <p className="text-gray-700 whitespace-pre-wrap">{text}</p>
           </div>
         </div>
       </DialogContent>

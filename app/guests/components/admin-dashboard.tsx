@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Lock, LogOut } from "lucide-react";
+import { LoaderIcon, Lock, LogOut, Upload } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -17,14 +17,42 @@ import { toast } from "sonner";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import type { RSVP } from "@/lib/types";
+import { uploadGuestList } from "@/app/actions";
+import { columns_all } from "./columns-all";
 
-export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
+export interface Guest {
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  group_id: string;
+  max_guests: number;
+}
+
+// Combined guest with attendance info
+export interface GuestWithAttendance extends Guest {
+  attendance: "attending" | "not-attending" | "pending";
+  rsvp_id?: string;
+  rsvp_date?: string;
+}
+
+export default function AdminDashboard({
+  rsvps,
+  guestList,
+}: {
+  rsvps: RSVP[];
+  guestList: Guest[];
+}) {
+  const [guestsWithAttendance, setGuestsWithAttendance] = useState<
+    GuestWithAttendance[]
+  >([]);
   const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const tabsContentRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Simple Auth Check
   useEffect(() => {
@@ -33,6 +61,30 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
       setIsAuthenticated(true);
     }
   }, []);
+
+  // Combine guest list with RSVP data
+  useEffect(() => {
+    if (guestList && rsvps) {
+      // Create a map of RSVPs by full_name for quick lookup
+      const rsvpMap = new Map();
+      rsvps.forEach((rsvp) => {
+        rsvpMap.set(rsvp.full_name.toLowerCase(), rsvp);
+      });
+
+      // Combine guest list with RSVP data
+      const combined = guestList.map((guest) => {
+        const rsvp = rsvpMap.get(guest.full_name.toLowerCase());
+        return {
+          ...guest,
+          attendance: rsvp ? rsvp.attendance : "pending",
+          rsvp_id: rsvp?.id,
+          rsvp_date: rsvp?.created_at,
+        };
+      });
+
+      setGuestsWithAttendance(combined);
+    }
+  }, [guestList, rsvps]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,30 +109,24 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
   const [stats, setStats] = useState({
     totalAttending: 0,
     totalNotAttending: 0,
-    totalResponses: 0,
-    totalVerified: 0,
-    totalWalkIns: 0,
-    totalGuestListAttending: 0,
+    totalPending: 0,
+    totalGuests: 0,
   });
 
   useEffect(() => {
-    calculateStats(rsvps || []);
-  }, [rsvps]);
+    calculateStats(guestsWithAttendance);
+  }, [guestsWithAttendance]);
 
-  const calculateStats = (data: RSVP[]) => {
-    const attending = data.filter((r) => r.attendance === "attending");
-    const notAttending = data.filter((r) => r.attendance === "not-attending");
-    const verified = data.filter((r) => r.is_verified_guest);
-    const walkIns = data.filter((r) => !r.is_verified_guest);
-    const guestListAttending = attending.filter((r) => r.is_verified_guest);
+  const calculateStats = (data: GuestWithAttendance[]) => {
+    const attending = data.filter((g) => g.attendance === "attending");
+    const notAttending = data.filter((g) => g.attendance === "not-attending");
+    const pending = data.filter((g) => g.attendance === "pending");
 
     setStats({
       totalAttending: attending.length,
       totalNotAttending: notAttending.length,
-      totalResponses: data.length,
-      totalVerified: verified.length,
-      totalWalkIns: walkIns.length,
-      totalGuestListAttending: guestListAttending.length,
+      totalPending: pending.length,
+      totalGuests: data.length,
     });
   };
 
@@ -100,9 +146,8 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
       "Name",
       "Email",
       "Attendance",
-      "Verified Guest",
-      "Guest Status",
       "RSVP Type",
+      "Guest Info",
       "Message",
       "Date",
     ];
@@ -113,11 +158,11 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
           `"${r.full_name}"`,
           `"${r.email || ""}"`,
           r.attendance,
-          r.is_verified_guest ? "Yes" : "No",
-          r.is_verified_guest ? "On Guest List" : "Walk-in",
+
           r.rsvp_for_guest_id && r.rsvp_for_guest_id !== r.submitted_by_guest_id
             ? "RSVP for others"
             : "Self RSVP",
+          `"${(r.about_me || "").replace(/"/g, '""')}"`,
           `"${(r.message || "").replace(/"/g, '""')}"`,
           new Date(r.created_at).toLocaleDateString("en-US", {
             year: "numeric",
@@ -146,9 +191,65 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
     toast.success("CSV exported successfully");
   };
 
+  const handleGuestListUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.name.endsWith(".csv")) {
+      toast.error("Please upload a CSV file");
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const result = await uploadGuestList(formData);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else if (result.success) {
+        toast.success(result.message);
+      } else if (result.message) {
+        toast.info(result.message);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Failed to upload guest list");
+    } finally {
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      setIsUploading(false);
+    }
+  };
+
+  // Filter guests based on active tab
+  const filteredGuests = () => {
+    switch (activeTab) {
+      case "attending":
+        return guestsWithAttendance.filter((g) => g.attendance === "attending");
+      case "not-attending":
+        return guestsWithAttendance.filter(
+          (g) => g.attendance === "not-attending",
+        );
+      case "pending":
+        return guestsWithAttendance.filter((g) => g.attendance === "pending");
+      default:
+        return guestsWithAttendance;
+    }
+  };
+
   const attendingGuests = rsvps.filter((r) => r.attendance === "attending");
   const notAttendingGuests = rsvps.filter(
     (r) => r.attendance === "not-attending",
+  );
+  const pendingGuests = guestsWithAttendance.filter(
+    (g) => g.attendance !== "attending" && g.attendance !== "not-attending",
   );
 
   if (!isAuthenticated) {
@@ -241,6 +342,31 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             </div>
             <div className="animate-fade-in">
               <div className="flex items-center gap-3">
+                <div className="relative">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleGuestListUpload}
+                    accept=".csv"
+                    className="hidden"
+                    id="guest-list-upload"
+                    disabled={isUploading}
+                  />
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-300"
+                    disabled={isUploading}
+                  >
+                    {isUploading ? (
+                      <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Upload className={`mr-2 h-4 w-4`} />
+                    )}
+                    {isUploading ? "Uploading..." : "Upload Guest List (CSV)"}
+                  </Button>
+                </div>
                 <Button
                   onClick={exportToCSV}
                   variant="outline"
@@ -248,7 +374,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
                   className="border-gray-300"
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Export CSV
+                  Export RSVPs (CSV)
                 </Button>
                 <Button
                   onClick={handleLogout}
@@ -265,14 +391,14 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
         </div>
 
         {/* Stats Cards - Updated */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total Responses</p>
+                  <p className="text-sm text-gray-600">Total Guests</p>
                   <p className="text-3xl font-bold text-[#383539] mt-2">
-                    {stats.totalResponses}
+                    {stats.totalGuests}
                   </p>
                 </div>
                 <Users className="h-8 w-8 text-blue-500" />
@@ -307,6 +433,20 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="border-amber-200 bg-gradient-to-br from-amber-50 to-white animate-slide-up transition-all hover:shadow-lg hover:scale-[1.02]">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Pending</p>
+                  <p className="text-3xl font-bold text-[#383539] mt-2">
+                    {stats.totalPending}
+                  </p>
+                </div>
+                <LoaderIcon className="h-8 w-8 text-amber-500" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs
@@ -320,7 +460,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               value="all"
               className="transition-all duration-300 data-[state=active]:scale-[1.02]"
             >
-              All ({rsvps.length})
+              All ({stats.totalGuests})
             </TabsTrigger>
             <TabsTrigger
               value="attending"
@@ -334,6 +474,12 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             >
               Not Attending ({notAttendingGuests.length})
             </TabsTrigger>
+            <TabsTrigger
+              value="pending"
+              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
+            >
+              Pending ({pendingGuests.length})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-6">
@@ -341,11 +487,11 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               <CardHeader className="animate-fade-in">
                 <CardTitle>All RSVPs</CardTitle>
                 <CardDescription>
-                  Complete list of all guest responses
+                  Complete guest list with their RSVP status
                 </CardDescription>
               </CardHeader>
               <CardContent className="animate-fade-in">
-                <DataTable columns={columns} data={rsvps} />
+                <DataTable columns={columns_all} data={filteredGuests()} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -377,6 +523,20 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="pending" className="space-y-6">
+            <Card>
+              <CardHeader className="animate-fade-in">
+                <CardTitle>Pending</CardTitle>
+                <CardDescription>
+                  {stats.totalPending} guests have not responded
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="animate-fade-in">
+                <DataTable columns={columns_all} data={pendingGuests} />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Summary Card - Updated */}
@@ -385,7 +545,7 @@ export default function AdminDashboard({ rsvps }: { rsvps: RSVP[] }) {
             <div className="w-full gap-6">
               <div className="w-full">
                 <h3 className="text-lg font-semibold text-[#383539] mb-4">
-                  Recent Activity
+                  Recent RSVP Activity
                 </h3>
                 <div className="space-y-3">
                   {rsvps.slice(0, 3).map((rsvp, index) => (

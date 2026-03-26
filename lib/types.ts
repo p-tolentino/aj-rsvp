@@ -17,6 +17,7 @@ export type RSVP = {
   full_name: string;
   email: string;
   attendance: "attending" | "not-attending";
+  about_me?: string | null;
   message?: string | null;
   rsvp_for_guest_id?: string | null; // if RSVPing for someone else on the guest list
   submitted_by_guest_id: string | null;
