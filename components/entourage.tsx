@@ -434,7 +434,7 @@ export default function Entourage() {
           {/* Symbols - 2 Columns (MD) */}
           <div className="md:grid hidden md:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
             {/* Left Column */}
-            <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
+            <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12 items-center">
               {/* Veil */}
               <div>
                 <motion.div
@@ -442,7 +442,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
-                  className="text-center mb-3 sm:mb-4"
+                  className="text-center mb-3 sm:mb-4 max-w-lg"
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To enfold us with veil to protect our marriage in prayer and
@@ -456,7 +456,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
-                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-lg"
                 >
                   <div className="flex flex-col text-center justify-center">
                     {symbols.veil.map((name, idx) => (
@@ -475,7 +475,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
-                  className="text-center mb-3 sm:mb-4"
+                  className="text-center mb-3 sm:mb-4 max-w-lg"
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To Carry the Symbol of Faith
@@ -488,7 +488,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
-                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-lg"
                 >
                   <div className="flex flex-col text-center justify-center text-black/90">
                     {symbols.faith}
@@ -498,7 +498,7 @@ export default function Entourage() {
             </div>
 
             {/* Right Column */}
-            <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12">
+            <div className="flex flex-col space-y-8 sm:space-y-10 md:space-y-12 items-center">
               {/* Cord */}
               <div>
                 <motion.div
@@ -506,7 +506,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
-                  className="text-center mb-3 sm:mb-4"
+                  className="text-center mb-3 sm:mb-4 max-w-lg"
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To entwine us with Cord bound in unity and accountability.
@@ -519,7 +519,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.6 }}
-                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-lg"
                 >
                   <div className="flex flex-col text-center justify-center">
                     {symbols.cord.map((name, idx) => (
@@ -538,7 +538,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.6 }}
-                  className="text-center mb-3 sm:mb-4"
+                  className="text-center mb-3 sm:mb-4 max-w-lg"
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To Carry the Symbol of Treasure
@@ -551,7 +551,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.7 }}
-                  className="text-base sm:text-lg md:text-xl lg:text-2xl"
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-lg"
                 >
                   <div className="flex flex-col text-center justify-center text-black/90">
                     {symbols.treasure}
