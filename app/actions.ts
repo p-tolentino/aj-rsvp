@@ -164,11 +164,26 @@ export async function submitCompleteRSVP(
       }
     } else {
       // Single RSVP
+      const { data: verifiedGuest, error: fetchError } = await supabase
+        .from("guest_list")
+        .select("*")
+        .eq("id", data.guest_list_id)
+        .single();
+
+      if (fetchError || !verifiedGuest) {
+        console.error("Error fetching selected guests:", fetchError);
+        return {
+          success: false,
+          error: "SERVER_ERROR",
+          message: "Failed to fetch guest details.",
+        };
+      }
+
       const rsvp: InsertRSVP = {
         guest_list_id: data.guest_list_id,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        full_name: `${data.first_name} ${data.last_name}`,
+        first_name: verifiedGuest.first_name,
+        last_name: verifiedGuest.last_name,
+        full_name: verifiedGuest.full_name,
         email: data.email,
         attendance: data.attendance,
         about_me: data.about_me,

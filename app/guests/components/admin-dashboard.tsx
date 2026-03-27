@@ -330,25 +330,28 @@ export default function AdminDashboard({
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            {/* Title */}
             <div className="animate-fade-in">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#383539]">
-                  Wedding RSVP Dashboard
+                  RSVP Dashboard
                 </h1>
               </div>
               <p className="text-gray-600">
                 Manage and view all guest responses
               </p>
             </div>
-            <div className="animate-fade-in">
-              <div className="flex items-center gap-3">
-                <div className="relative">
+
+            {/* Buttons */}
+            <div>
+              <div className="flex flex-col md:flex-row w-full items-center gap-3">
+                <div className="flex w-full justify-center">
                   <input
                     type="file"
                     ref={fileInputRef}
                     onChange={handleGuestListUpload}
                     accept=".csv"
-                    className="hidden"
+                    className="hidden w-full"
                     id="guest-list-upload"
                     disabled={isUploading}
                   />
@@ -356,7 +359,7 @@ export default function AdminDashboard({
                     onClick={() => fileInputRef.current?.click()}
                     variant="outline"
                     size="sm"
-                    className="border-gray-300"
+                    className="border-gray-300 w-full"
                     disabled={isUploading}
                   >
                     {isUploading ? (
@@ -371,7 +374,7 @@ export default function AdminDashboard({
                   onClick={exportToCSV}
                   variant="outline"
                   size="sm"
-                  className="border-gray-300"
+                  className="border-gray-300 w-full"
                 >
                   <Download className="mr-2 h-4 w-4" />
                   Export RSVPs (CSV)
@@ -380,7 +383,7 @@ export default function AdminDashboard({
                   onClick={handleLogout}
                   variant="outline"
                   size="sm"
-                  className="border-red-200 text-red-600 hover:bg-red-800 hover:text-white"
+                  className="border-red-200 text-red-600 hover:bg-red-800 hover:text-white w-full"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
@@ -455,12 +458,18 @@ export default function AdminDashboard({
           value={activeTab}
           onValueChange={handleTabChange}
         >
-          <TabsList className="grid w-full md:w-auto grid-cols-2 lg:grid-cols-5 md:inline-flex bg-transparent text-[#212122]">
+          <TabsList className="grid w-full md:w-auto grid-cols-2 lg:grid-cols-5 md:inline-flex bg-transparent text-[#212122] mb-10">
             <TabsTrigger
               value="all"
               className="transition-all duration-300 data-[state=active]:scale-[1.02]"
             >
               All ({stats.totalGuests})
+            </TabsTrigger>
+            <TabsTrigger
+              value="pending"
+              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
+            >
+              Pending ({pendingGuests.length})
             </TabsTrigger>
             <TabsTrigger
               value="attending"
@@ -473,12 +482,6 @@ export default function AdminDashboard({
               className="transition-all duration-300 data-[state=active]:scale-[1.02]"
             >
               Not Attending ({notAttendingGuests.length})
-            </TabsTrigger>
-            <TabsTrigger
-              value="pending"
-              className="transition-all duration-300 data-[state=active]:scale-[1.02]"
-            >
-              Pending ({pendingGuests.length})
             </TabsTrigger>
           </TabsList>
 
