@@ -190,7 +190,7 @@ export default function Entourage() {
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </div>
-                <div className="flex flex-col text-center justify-center text-xs">
+                <div className="flex flex-col text-center justify-center text-xs sm:text-lg md:text-xl lg:text-2xl">
                   {pillars[2].names.map((name, idx) => (
                     <p key={idx} className="text-black/90">
                       {name}
@@ -207,7 +207,7 @@ export default function Entourage() {
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </div>
-                <div className="flex flex-col text-center justify-center text-[11.2px] leading-none">
+                <div className="flex flex-col text-center justify-center text-[11.2px] leading-none sm:text-lg md:text-xl lg:text-2xl">
                   {pillars[3].names.map((name, idx) => (
                     <div key={name}>
                       <p key={name} className="text-black/90">
