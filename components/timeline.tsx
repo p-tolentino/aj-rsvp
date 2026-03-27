@@ -143,7 +143,7 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-8xl md:text-9xl font-beautifully-delicious mb-4 sm:mb-6"
+          className="text-6xl md:text-9xl font-beautifully-delicious mb-4 sm:mb-6"
         >
           A Special Note
         </motion.h4>
@@ -152,7 +152,7 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-xl md:text-2xl italic px-4 sm:px-8 md:px-12"
+          className="text-md md:text-2xl italic px-4 sm:px-8 md:px-12"
         >
           We&apos;d appreciate it if you could stay until the end of the program
           — we&apos;ve prepared a little something special for everyone who
