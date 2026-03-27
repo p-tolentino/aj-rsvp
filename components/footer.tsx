@@ -14,7 +14,7 @@ export const routes = [
   { name: "Local Guide", href: "#local-spots" },
   { name: "Attire", href: "#attire" },
   { name: "Registry", href: "#registry" },
-  { name: "Paylists", href: "#playlists" },
+  { name: "Playlists", href: "#playlists" },
   { name: "RSVP", href: "#rsvp" },
 ];
 
