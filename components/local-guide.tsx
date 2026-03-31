@@ -1,7 +1,13 @@
 "use client";
 
 import { Card, CardContent } from "./ui/card";
-import { LandPlot as Golf, Coffee, Hotel, Ticket } from "lucide-react";
+import {
+  LandPlot as Golf,
+  Coffee,
+  Hotel,
+  Ticket,
+  ExternalLink,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { GiChickenLeg, GiRunningShoe } from "react-icons/gi";
 
@@ -25,6 +31,8 @@ export default function LocalGuide() {
           imageUrl: "/venues/range.jpg",
           rotation: -2,
           highlight: false,
+          href: "https://www.google.com/maps/dir//SouthPoint+Driving+Range,+Promenade,+Alabang,+Muntinlupa,+1781+Metro+Manila/@14.4143629,121.0307399,17z/data=!4m17!1m7!3m6!1s0x3397d04aed18b38f:0xe164a9d325b08ef3!2sSouthPoint+Driving+Range!8m2!3d14.4143578!4d121.0356108!16s%2Fg%2F1thl2z33!4m8!1m0!1m5!1m1!1s0x3397d04aed18b38f:0xe164a9d325b08ef3!2m2!1d121.0356108!2d14.4143578!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+          amenities: [],
         },
         {
           id: 2,
@@ -39,6 +47,8 @@ export default function LocalGuide() {
           imageUrl: "/venues/kgolf.jpg",
           rotation: 1,
           highlight: false,
+          href: "https://www.google.com/maps/dir//KGolf+Alabang,+G%2FF+Unit+2%264,+One+Trium+Tower,+Filinvest+Ave,+Pacific+Rim,+Alabang,+Muntinlupa,+1780+Metro+Manila/@14.4143629,121.0307399,17z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x3397d10035d65b6b:0x96a89357d8752d5!2m2!1d121.0335178!2d14.4191625!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+          amenities: [],
         },
         {
           id: 3,
@@ -53,6 +63,8 @@ export default function LocalGuide() {
           imageUrl: "/venues/filinvest.jpg",
           rotation: -1,
           highlight: false,
+          href: "https://www.google.com/maps/dir//Filinvest+City+Central+Park,+Central+Park,+Filinvest+City,+Alabang,+Muntinlupa,+Metro+Manila/@14.4143629,121.0307399,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d1e62bc43ea1:0x89854f5d6f88f8f2!2m2!1d121.0353775!2d14.4169435!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+          amenities: [],
         },
       ],
     },
@@ -75,6 +87,8 @@ export default function LocalGuide() {
           imageUrl: "/venues/cnm.webp",
           highlight: true,
           rotation: 2,
+          href: "https://www.google.com/maps/dir//Chicken+Near+Me+-+Alabang,+111,+Building+Civic+Dr,+Muntinlupa,+1781+Metro+Manila/@14.4143629,121.0307399,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d10037fcfd85:0xf692bea4405bef0d!2m2!1d121.0434925!2d14.4181073!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+          amenities: [],
         },
         {
           id: 5,
@@ -88,6 +102,8 @@ export default function LocalGuide() {
           imageUrl: "/venues/westgate.jpg",
           rotation: -1,
           highlight: false,
+          href: "https://www.google.com/maps/dir//Westgate+Center,+Filinvest+Ave,+City,+Muntinlupa,+1781+Metro+Manila/@14.4144136,121.0357382,16.75z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d03343f23c69:0xfd1c591af0bda086!2m2!1d121.0339804!2d14.4216573!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+          amenities: [],
         },
       ],
     },
@@ -102,19 +118,95 @@ export default function LocalGuide() {
           title: "Vivere Hotel",
           location: "Alabang",
           description:
-            "Vivere Hotel, Filinvest City, 5102 Bridgeway Ave., Alabang, Muntinlupa ",
+            "Vivere Hotel, Filinvest City, 5102 Bridgeway Ave., Alabang, Muntinlupa",
           details:
             "Our recommended hotel for comfort, convenience, and proximity to most venues",
           icon: Hotel,
           imageColor: "bg-gradient-to-br from-primary/20 to-accent/10",
           imageUrl: "/venues/vivere.jpg",
-          rotation: 0,
-
+          amenities: [
+            "Rooftop Pool (The Nest)",
+            "Spa & Wellness Center",
+            "Fitness Center",
+            "24-hour Room Service",
+            "Free WiFi",
+          ],
+          rotation: -2,
           highlight: false,
+          href: "https://www.google.com/maps/dir//Vivere+Hotel,+Filinvest+City,+5102+Bridgeway+Ave,+Alabang,+Muntinlupa,+1781+Metro+Manila/@14.4144136,121.0357382,16.75z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d0369f8ed3e7:0x92584a7829e912ab!2m2!1d121.0393331!2d14.4199724!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+        },
+        {
+          id: 7,
+          title: "Acacia Hotel",
+          location: "Alabang",
+          description: "Commerce Avenue, Alabang",
+
+          details:
+            "Elegant hotel with modern Filipino hospitality and convenient location",
+          icon: Hotel,
+          imageColor: "bg-gradient-to-br from-secondary/20 to-primary/10",
+          imageUrl: "/venues/acacia.jpg",
+          amenities: [
+            "Rooftop Pool",
+            "Fitness Center",
+            "Restaurant & Bar",
+            "Free WiFi",
+            "Free Parking",
+          ],
+          rotation: 1,
+          highlight: false,
+          href: "https://www.google.com/maps/dir//Acacia+Hotel+Manila,+5400+E+Asia+Dr,+Alabang,+Muntinlupa,+1781+Metro+Manila/@14.4144136,121.0357382,16.75z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x3397d03492e0f54b:0x25e6cc09b1497bc2!2m2!1d121.0352505!2d14.4206417!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+        },
+        {
+          id: 8,
+          title: "Azumi Boutique Hotel",
+          location: "Alabang",
+          description: "Madrigal Business Park, Alabang",
+          details:
+            "Modern minimalist hotel perfect for the contemporary traveler",
+          icon: Hotel,
+          imageColor: "bg-gradient-to-br from-accent/20 to-secondary/10",
+          imageUrl: "/venues/azumi.jpg",
+          amenities: [
+            "Rooftop 360 Bar",
+            "Swimming Pool",
+            "Fitness Center",
+            "Co-working Space",
+            "Free WiFi",
+            "Free Parking",
+          ],
+          rotation: -1,
+          highlight: false,
+          href: "https://www.google.com/maps/dir//Azumi+Boutique+Hotel,+Alabang+Manila,+Phase+3,+2205+Market+Street,+Madrigal+Business+Park,+Alabang,+Muntinlupa,+1780+Metro+Manila/@14.4144136,121.0357382,16.75z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d1cf26d95555:0xe9496ead8565b45c!2m2!1d121.0275872!2d14.4272306!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+        },
+        {
+          id: 9,
+          title: "Hop Inn Hotel",
+          location: "Alabang-Zapote Road, Las Piñas",
+          description: "Alabang-Zapote Road, Las Piñas",
+          details:
+            "Budget-friendly hotel with clean, comfortable rooms and reliable service",
+          icon: Hotel,
+          imageColor: "bg-gradient-to-br from-primary/20 to-secondary/5",
+          imageUrl: "/venues/hop-inn.jpg",
+          amenities: [
+            "24/7 Security",
+            "Free High-Speed WiFi",
+            "Air Conditioning",
+            "Parking Available",
+            "24-hour Front Desk",
+          ],
+          rotation: 2,
+          highlight: false,
+          href: "https://www.google.com/maps/dir//Hop+Inn+Hotel+Alabang,+Lot+2+Block+4+Phase+3,+Market+Street,+Madrigal+Business+Park,+New+Alabang+Village,+Muntinlupa,+1780+Metro+Manila/@14.4144136,121.0357382,16.75z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3397d1d2070cdf53:0xe8f427f079f7d6b8!2m2!1d121.0282581!2d14.4280495!3e0?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D",
         },
       ],
     },
   ];
+
+  const handleVenueClick = (href: string) => {
+    window.open(href, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <section className="py-16 relative bg-[url(/bg-local-guide.png)] bg-cover bg-center overflow-hidden w-full h-full">
@@ -166,21 +258,31 @@ export default function LocalGuide() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: itemIndex * 0.1 }}
-                        className="relative h-full"
+                        className="relative h-full group"
                       >
                         {/* Tape effect */}
                         <div className="tape-effect absolute inset-0 z-0"></div>
 
                         <Card
-                          className={`${category.color} ${category.bgColor} border-2 shadow-lg hover:shadow-xl transition-all duration-300 h-full group overflow-hidden rounded-none`}
+                          className={`${category.color} ${category.bgColor} border-2 shadow-lg hover:shadow-xl transition-all duration-300 h-full group overflow-hidden rounded-none cursor-pointer hover:scale-[1.02]`}
                           style={{ transform: `rotate(${item.rotation}deg)` }}
+                          onClick={() => handleVenueClick(item.href)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              handleVenueClick(item.href);
+                            }
+                          }}
+                          title="Show on Google Maps"
                         >
                           <CardContent className="p-0 h-full flex flex-col">
                             <div
                               className={`relative h-40 ${item.imageColor} overflow-hidden`}
                             >
                               <div
-                                className={`absolute inset-0 -z-50 flex flex-col items-center justify-center p-4 bg-cover bg-center`}
+                                className={`absolute inset-0 ${item.imageColor} bg-cover bg-center transition-transform duration-300`}
                                 style={{
                                   backgroundImage: item.imageUrl
                                     ? `url(${item.imageUrl})`
@@ -200,6 +302,15 @@ export default function LocalGuide() {
                               </div>
                             )}
 
+                            <div className="absolute inset-0 bg-black/0 group-hover:backdrop-blur-md transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                              <div className="bg-white/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg transform transition-all duration-300">
+                                <ExternalLink className="h-4 w-4 text-primary" />
+                                <span className="text-sm font-medium text-primary">
+                                  Show on Google Maps
+                                </span>
+                              </div>
+                            </div>
+
                             <div className="p-6 flex-1 flex flex-col">
                               <div className="mb-4">
                                 <h3 className="text-xl font-serif font-semibold text-foreground mb-2 flex items-center gap-2">
@@ -215,6 +326,24 @@ export default function LocalGuide() {
                                   {item.details}
                                 </p>
                               </div>
+
+                              {item.amenities.length > 0 && (
+                                <div className="mt-3">
+                                  <p className="text-xs font-semibold text-foreground/70 mb-2">
+                                    Amenities:
+                                  </p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {item.amenities.map((amenity, idx) => (
+                                      <span
+                                        key={idx}
+                                        className="text-xs px-2 py-1 bg-white/50 rounded-full text-foreground/70"
+                                      >
+                                        {amenity}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
 
                               {/* Special note for chicken shop */}
                               {item.highlight && (

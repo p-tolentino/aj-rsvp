@@ -74,7 +74,7 @@ export default function Invitation() {
                 at Sacred Heart of Jesus, Alabang
               </span>
               <span className="text-sm sm:text-base md:text-lg font-semibold">
-                reception from 11:00 am
+                Reception follows
               </span>
               <span className="text-xs sm:text-sm md:text-base">
                 at Brittany Palazzo

@@ -305,7 +305,7 @@ export default function Entourage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
-                  className="text-center mb-3 sm:mb-4 mt-4 md:mt-0"
+                  className="text-center mb-3 sm:mb-4 md:mt-0"
                 >
                   <h4 className="text-md sm:text-xl md:text-2xl font-serif font-semibold text-black mb-2">
                     Groomsmen

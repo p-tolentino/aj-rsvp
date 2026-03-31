@@ -27,7 +27,7 @@ const timelineItems = [
     title: "Cocktail Hour",
     venue: "Brittany Palazzo, Daang Reyna, Almanza Dos, Las Piñas",
     imageUrl: "/image-cocktail.png",
-    description: "Refreshments & Mingling",
+    description: "Refreshments & Socials",
     latlng: venueCoords[1],
   },
   {
