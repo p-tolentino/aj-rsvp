@@ -544,8 +544,6 @@ export async function deleteGuest(id: string) {
     .eq("guest_list_id", id)
     .single();
 
-  console.log(existingRSVP);
-
   if (existingRSVP) {
     const { data: deletedRSVP, error: deleteError } = await supabase
       .from("rsvps")
