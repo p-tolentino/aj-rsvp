@@ -192,12 +192,17 @@ export const columns: ColumnDef<RSVP>[] = [
         rsvpForGuestId !== submittedByGuestId
       ) {
         return (
-          <Badge
-            variant="outline"
-            className="bg-purple-50 text-purple-700 border-purple-200"
-          >
-            RSVP by others
-          </Badge>
+          <>
+            <Badge
+              variant="outline"
+              className="bg-purple-50 text-purple-700 border-purple-200 xl:flex hidden"
+            >
+              RSVP by others
+            </Badge>
+            <span className="text-sm text-purple-700 italic xl:hidden flex">
+              RSVP by others
+            </span>
+          </>
         );
       }
 
@@ -207,7 +212,7 @@ export const columns: ColumnDef<RSVP>[] = [
   },
   {
     accessorKey: "about_me",
-    header: "Guest Info",
+    header: `"About Me"`,
     cell: ({ row }) => {
       const about_guest = row.getValue("about_me") as string;
       const name = row.getValue("full_name") as string;

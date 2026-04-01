@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
             }}
             className="border-gray-300 bg-transparent"
           >
-            Clear Filters
+            Clear Search
           </Button>
         </div>
         <div className="w-full sm:w-auto">
@@ -224,7 +224,7 @@ export function UpdateGuest({
         <Button
           variant="secondary"
           size="sm"
-          className="w-full sm:w-auto md:ml-10 h-8 p-4 text-background"
+          className="w-full sm:w-auto md:ml-10 h-9 rounded-md px-3 text-background"
         >
           {type === "edit" ? (
             <Pencil className="h-4 w-4 mr-1" />

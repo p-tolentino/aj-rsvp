@@ -19,6 +19,7 @@ import { Loader2 } from "lucide-react";
 import { addGuest, editGuest, Guest } from "@/app/actions";
 import { toast } from "sonner";
 import { Label } from "./ui/label";
+import { useState } from "react";
 
 export const UpsertGuestSchema = z.object({
   first_name: z
@@ -44,6 +45,8 @@ const UpsertGuestForm = ({
   guest?: any;
   onSuccess: (open: boolean) => void;
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<UpsertGuestFormData>({
     resolver: zodResolver(UpsertGuestSchema),
     defaultValues: {
@@ -54,11 +57,8 @@ const UpsertGuestForm = ({
     },
   });
 
-  const {
-    formState: { isSubmitting },
-  } = form;
-
   const handleSubmit = async (data: UpsertGuestFormData) => {
+    setIsSubmitting(true);
     const guestDetails = {
       first_name: data.first_name,
       last_name: data.last_name,
@@ -84,6 +84,8 @@ const UpsertGuestForm = ({
         description: "Please try again or contact us for assistance.",
       });
       console.error("Operation error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
