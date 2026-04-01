@@ -452,7 +452,7 @@ export async function editGuest(
     return { error: "Failed to edit guest" };
   }
 
-  if (attendance) {
+  if (attendance === 'attending' || attendance === 'not-attending') {
     const { data: verifiedGuest, error: fetchError } = await supabase
       .from("guest_list")
       .select("*")
