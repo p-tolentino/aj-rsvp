@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import type { GuestListEntry, RSVP, InsertRSVP } from "@/lib/types";
+import { UpsertGuestFormData } from "@/components/guest-form";
 
 type VerifyGuestResult = {
   verified: boolean;
@@ -407,4 +408,75 @@ export async function uploadGuestList(formData: FormData) {
     console.error("Error processing guest list upload:", error);
     return { error: "Failed to process guest list upload" };
   }
+}
+
+export async function addGuest(guest: UpsertGuestFormData) {
+  const supabase = await createClient();
+
+  // Insert new guests
+  const { data: insertedGuest, error: insertError } = await supabase
+    .from("guest_list")
+    .insert(guest)
+    .select();
+
+  if (insertError) {
+    console.error("Error inserting guest:", insertError);
+    return { error: "Failed to add new guest" };
+  }
+
+  // Revalidate the dashboard path to refresh data
+  revalidatePath("/guests");
+
+  return {
+    success: true,
+    message: `Successfully added new ${guest.first_name} ${guest.last_name} ${`(Group: ${guest.group_id}) `}to the list.`,
+  };
+}
+
+export async function editGuest(guest: UpsertGuestFormData, guestId: string) {
+  const supabase = await createClient();
+
+  // Update guest
+  const { data: updatedGuest, error: updateError } = await supabase
+    .from("guest_list")
+    .update(guest)
+    .eq("id", guestId)
+    .select();
+
+  if (updateError) {
+    console.error("Error updating guest:", updateError);
+    return { error: "Failed to edit guest" };
+  }
+
+  // Revalidate the dashboard path to refresh data
+  revalidatePath("/guests");
+
+  return {
+    success: true,
+    message: `Successfully edited guest.`,
+  };
+}
+
+export async function deleteGuest(id: string) {
+  const supabase = await createClient();
+
+  // Delete guest
+  const { data: deletedGuest, error: deleteError } = await supabase
+    .from("guest_list")
+    .delete()
+    .eq("id", id)
+    .select();
+
+  if (deleteError) {
+    console.error("Error deleting guest:", deleteError);
+    return { error: "Failed to delete guest" };
+  }
+
+  // Revalidate the dashboard path to refresh data
+  revalidatePath("/guests");
+
+  return {
+    success: true,
+    message: `Successfully deleted guest.`,
+  };
 }

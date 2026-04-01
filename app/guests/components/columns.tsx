@@ -8,10 +8,12 @@ import {
   Mail,
   User,
   Calendar,
-  MessageSquare,
   Eye,
   CheckCircle,
   XCircle,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -23,6 +25,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { RSVP } from "@/lib/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import UpsertGuestForm from "@/components/guest-form";
+import { deleteGuest } from "@/app/actions";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const columns: ColumnDef<RSVP>[] = [
   {
@@ -238,6 +261,86 @@ export const columns: ColumnDef<RSVP>[] = [
       );
     },
   },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const guest = row.original;
+
+      const handleDelete = async (id: string) => {
+        const result = await deleteGuest(id);
+
+        if (result.error) {
+          toast.error(result.message);
+        } else {
+          toast.success(result.message);
+        }
+      };
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-[#383539] hover:text-[#383539]/80 hover:bg-[#383539]/10"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white">
+            <DropdownMenuItem
+              asChild
+              className="hover:text-white hover:bg-[#383539]"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <EditGuest guest={guest} />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              asChild
+              onSelect={(e) => e.preventDefault()}
+              className="text-red-600"
+            >
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-red-600 w-full h-full relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors justify-start hover:bg-[#383539] hover:text-accent-foreground"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Guest
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="border-slate-200 dark:border-slate-800">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-slate-900 dark:text-slate-100">
+                      Are you sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-slate-700 dark:text-slate-300">
+                      This action cannot be undone. This will permanently delete
+                      &quot;{guest.first_name} {guest.last_name}&quot; from your
+                      guest list.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-950 hover:text-foreground">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDelete(guest.id)}
+                      className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
 
 // Message Cell Component
@@ -282,6 +385,49 @@ function DialogCell({
         <div className="mt-4">
           <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
             <p className="text-gray-700 whitespace-pre-wrap">{text}</p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function EditGuest({ guest }: { guest?: any }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Handle opening the dialog
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <div className="inline-flex items-center justify-start gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 w-full cursor-pointer bg-none text-foreground hover:bg-[#383539] hover:text-accent-foreground h-9 p-2">
+          <Pencil className="h-4 w-4 mr-2" />
+          Edit Guest
+        </div>
+      </DialogTrigger>
+      <DialogContent
+        className="sm:max-w-[500px]"
+        onInteractOutside={(e) => {
+          // Prevent closing when clicking outside if needed
+          e.preventDefault();
+        }}
+      >
+        <DialogHeader>
+          <DialogTitle className="text-[#383539]">Edit Guest</DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Enter guest details
+          </DialogDescription>
+        </DialogHeader>
+        <div className="mt-4">
+          <div className="bg-gray-50 rounded-lg p-4 overflow-y-auto">
+            <UpsertGuestForm
+              guest={guest}
+              type="edit"
+              onSuccess={handleOpenChange}
+            />
           </div>
         </div>
       </DialogContent>

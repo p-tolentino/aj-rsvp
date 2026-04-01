@@ -21,6 +21,7 @@ import { uploadGuestList } from "@/app/actions";
 import { columns_all } from "./columns-all";
 
 export interface Guest {
+  id: string;
   first_name: string;
   last_name: string;
   full_name: string;

@@ -22,6 +22,7 @@ export type RSVP = {
   rsvp_for_guest_id?: string | null; // if RSVPing for someone else on the guest list
   submitted_by_guest_id: string | null;
   is_verified_guest: boolean; // true if name found on guest list
+  group_id?: string;
 };
 
 export type InsertGuestListEntry = Omit<GuestListEntry, "id" | "created_at">;

@@ -3,8 +3,37 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, CheckCircle, Loader, XCircle } from "lucide-react";
+import {
+  ArrowUpDown,
+  CheckCircle,
+  XCircle,
+  MoreHorizontal,
+  Trash2,
+  Loader,
+} from "lucide-react";
 import { GuestWithAttendance } from "./admin-dashboard";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { EditGuest } from "./columns";
+import { deleteGuest } from "@/app/actions";
 
 export const columns_all: ColumnDef<GuestWithAttendance>[] = [
   {
@@ -119,6 +148,86 @@ export const columns_all: ColumnDef<GuestWithAttendance>[] = [
         <p>{groupID}</p>
       ) : (
         <span className="text-[#383539]/45 italic">No Group ID</span>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const guest = row.original;
+
+      const handleDelete = async (id: string) => {
+        const result = await deleteGuest(id);
+
+        if (result.error) {
+          toast.error(result.message);
+        } else {
+          toast.success(result.message);
+        }
+      };
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-[#383539] hover:text-[#383539]/80 hover:bg-[#383539]/10"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white">
+            <DropdownMenuItem
+              asChild
+              className="hover:text-white hover:bg-[#383539]"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <EditGuest guest={guest} />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              asChild
+              onSelect={(e) => e.preventDefault()}
+              className="text-red-600"
+            >
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-red-600 w-full h-full relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors justify-start hover:bg-[#383539] hover:text-accent-foreground"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Guest
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="border-slate-200 dark:border-slate-800">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-slate-900 dark:text-slate-100">
+                      Are you sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-slate-700 dark:text-slate-300">
+                      This action cannot be undone. This will permanently delete
+                      &quot;{guest.first_name} {guest.last_name}&quot; from your
+                      guest list.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-950 hover:text-foreground">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDelete(guest.id)}
+                      className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
