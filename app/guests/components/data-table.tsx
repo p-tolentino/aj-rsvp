@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {/* Search and Filters */}
-      <div className="flex items-center gap-4 mb-4 justify-between">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-4 justify-between">
         <div className="flex items-center gap-4 flex-1">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
             Clear Filters
           </Button>
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <UpdateGuest />
         </div>
       </div>
@@ -225,7 +225,7 @@ export function UpdateGuest({
         <Button
           variant="secondary"
           size="sm"
-          className="ml-10 h-8 p-4 text-background"
+          className="w-full sm:w-auto md:ml-10 h-8 p-4 text-background"
         >
           {type === "edit" ? (
             <Pencil className="h-4 w-4 mr-1" />

@@ -459,7 +459,7 @@ export default function AdminDashboard({
           value={activeTab}
           onValueChange={handleTabChange}
         >
-          <TabsList className="grid w-full md:w-auto grid-cols-2 lg:grid-cols-5 md:inline-flex bg-transparent text-[#212122] mb-10">
+          <TabsList className="grid w-full md:w-auto grid-cols-2 lg:grid-cols-5 md:inline-flex bg-transparent text-[#212122] mb-10 md:mb-0">
             <TabsTrigger
               value="all"
               className="transition-all duration-300 data-[state=active]:scale-[1.02]"
