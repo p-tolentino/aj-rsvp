@@ -83,7 +83,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 w-full border-b border-b-[#212122]/20 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 h-8 w-8">
+            <Link href="/guests" className="flex items-center gap-2 h-8 w-8">
               <Image
                 src="/aj-logo.png"
                 alt="A&J Wedding"

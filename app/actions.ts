@@ -85,7 +85,7 @@ type SubmitRSVPData = {
   attendance: "attending" | "not-attending";
   about_me: string | null;
   message: string | null;
-  guest_list_id: string | null;
+  guest_list_id: string;
   selected_guest_ids: string[];
   is_verified_guest: boolean;
   submitter_guest_id: string | null;
@@ -429,11 +429,15 @@ export async function addGuest(guest: UpsertGuestFormData) {
 
   return {
     success: true,
-    message: `Successfully added new ${guest.first_name} ${guest.last_name} ${`(Group: ${guest.group_id}) `}to the list.`,
+    message: `Successfully added new "${guest.first_name} ${guest.last_name}" ${guest.group_id && `(Group: ${guest.group_id}) `}to the guest list.`,
   };
 }
 
-export async function editGuest(guest: UpsertGuestFormData, guestId: string) {
+export async function editGuest(
+  guest: UpsertGuestFormData,
+  guestId: string,
+  attendance?: "attending" | "not-attending",
+) {
   const supabase = await createClient();
 
   // Update guest
@@ -448,6 +452,80 @@ export async function editGuest(guest: UpsertGuestFormData, guestId: string) {
     return { error: "Failed to edit guest" };
   }
 
+  if (attendance) {
+    const { data: verifiedGuest, error: fetchError } = await supabase
+      .from("guest_list")
+      .select("*")
+      .eq("id", guestId)
+      .single();
+
+    console.log(guestId);
+
+    if (fetchError || !verifiedGuest) {
+      console.error("Error fetching selected guests:", fetchError);
+      return {
+        success: false,
+        error: "SERVER_ERROR",
+        message: "Failed to fetch guest details.",
+      };
+    }
+
+    const rsvp: InsertRSVP = {
+      guest_list_id: verifiedGuest.id,
+      first_name: verifiedGuest.first_name,
+      last_name: verifiedGuest.last_name,
+      full_name: verifiedGuest.full_name,
+      email: "ADMIN",
+      attendance: attendance,
+      about_me: "",
+      message: "",
+      rsvp_for_guest_id: verifiedGuest.id,
+      submitted_by_guest_id: null,
+      is_verified_guest: true,
+    };
+
+    // Check for duplicate rsvp
+    const { data: existing } = await supabase
+      .from("rsvps")
+      .select("*")
+      .eq("guest_list_id", rsvp.guest_list_id)
+      .single();
+
+    if (existing) {
+      const { data: updatedAttendance, error } = await supabase
+        .from("rsvps")
+        .update({ ...existing, attendance: attendance })
+        .eq("id", existing.id)
+        .select();
+
+      if (error) {
+        console.error("Error inserting RSVP:", error);
+        return {
+          success: false,
+          error: "SERVER_ERROR",
+          message: "Failed to submit RSVP. Please try again.",
+        };
+      }
+
+      revalidatePath("/guests");
+      return { success: true, message: `Successfully edited guest.` };
+    }
+
+    const { error } = await supabase.from("rsvps").insert(rsvp);
+
+    if (error) {
+      console.error("Error inserting RSVP:", error);
+      return {
+        success: false,
+        error: "SERVER_ERROR",
+        message: "Failed to edit RSVP. Please try again.",
+      };
+    }
+
+    revalidatePath("/guests");
+    return { success: true, message: `Successfully edited guest.` };
+  }
+
   // Revalidate the dashboard path to refresh data
   revalidatePath("/guests");
 
@@ -459,6 +537,22 @@ export async function editGuest(guest: UpsertGuestFormData, guestId: string) {
 
 export async function deleteGuest(id: string) {
   const supabase = await createClient();
+
+  const { data: existingRSVP } = await supabase
+    .from("rsvps")
+    .select("*")
+    .eq("guest_list_id", id)
+    .single();
+
+  console.log(existingRSVP);
+
+  if (existingRSVP) {
+    const { data: deletedRSVP, error: deleteError } = await supabase
+      .from("rsvps")
+      .delete()
+      .eq("id", existingRSVP.id)
+      .select();
+  }
 
   // Delete guest
   const { data: deletedGuest, error: deleteError } = await supabase

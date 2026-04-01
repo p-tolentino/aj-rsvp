@@ -189,7 +189,7 @@ export default function MultiStepRSVPForm() {
         attendance: data.attendance,
         about_me: data.about_me || null,
         message: data.message || null,
-        guest_list_id: verifiedGuest?.id || null,
+        guest_list_id: verifiedGuest?.id || "",
         selected_guest_ids: step2Data?.selected_guest_ids || [],
         is_verified_guest: !!verifiedGuest,
         submitter_guest_id: verifiedGuest?.id || null,
@@ -712,10 +712,6 @@ export default function MultiStepRSVPForm() {
                               />
                             </FormControl>
                             <FormMessage />
-                            <div className="flex justify-between text-[10px] sm:text-xs italic text-gray-400 mt-1">
-                              <span>Max 500 characters</span>
-                              <span>{field.value?.length || 0}/500</span>
-                            </div>
                           </FormItem>
                         )}
                       />
@@ -744,10 +740,6 @@ export default function MultiStepRSVPForm() {
                             />
                           </FormControl>
                           <FormMessage />
-                          <div className="flex justify-between text-[10px] sm:text-xs italic text-gray-400 mt-1">
-                            <span>Max 500 characters</span>
-                            <span>{field.value?.length || 0}/500</span>
-                          </div>
                         </FormItem>
                       )}
                     />

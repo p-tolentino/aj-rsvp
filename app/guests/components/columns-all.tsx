@@ -217,7 +217,7 @@ export const columns_all: ColumnDef<GuestWithAttendance>[] = [
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => handleDelete(guest.id)}
+                      onClick={() => handleDelete(row.original.id)}
                       className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
                     >
                       Delete

@@ -264,7 +264,13 @@ export const columns: ColumnDef<RSVP>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const guest = row.original;
+      const guest = {
+        id: row.original.guest_list_id,
+        first_name: row.original.first_name,
+        last_name: row.original.last_name,
+        group_id: row.original.group_id,
+        attendance: row.original.attendance,
+      };
 
       const handleDelete = async (id: string) => {
         const result = await deleteGuest(id);
@@ -327,7 +333,7 @@ export const columns: ColumnDef<RSVP>[] = [
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => handleDelete(guest.id)}
+                      onClick={() => handleDelete(row.original.guest_list_id)}
                       className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
                     >
                       Delete

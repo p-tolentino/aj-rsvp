@@ -11,7 +11,7 @@ export type GuestListEntry = {
 export type RSVP = {
   id: string;
   created_at: string;
-  guest_list_id: string | null; // null if not on guest list
+  guest_list_id: string;
   first_name: string;
   last_name: string;
   full_name: string;

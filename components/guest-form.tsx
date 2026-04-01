@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -13,11 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { addGuest, editGuest, Guest } from "@/app/actions";
 import { toast } from "sonner";
+import { Label } from "./ui/label";
 
 export const UpsertGuestSchema = z.object({
   first_name: z
@@ -29,6 +30,7 @@ export const UpsertGuestSchema = z.object({
     .min(1, "Last name is required")
     .max(100, "Last name is too long"),
   group_id: z.string().optional(),
+  attendance: z.enum(["attending", "not-attending"]).optional(),
 });
 
 export type UpsertGuestFormData = z.infer<typeof UpsertGuestSchema>;
@@ -48,6 +50,7 @@ const UpsertGuestForm = ({
       first_name: guest?.first_name || "",
       last_name: guest?.last_name || "",
       group_id: guest?.group_id || "",
+      attendance: guest?.attendance || "",
     },
   });
 
@@ -55,62 +58,39 @@ const UpsertGuestForm = ({
     formState: { isSubmitting },
   } = form;
 
-  const handleAddGuest = async (data: UpsertGuestFormData) => {
+  const handleSubmit = async (data: UpsertGuestFormData) => {
+    const guestDetails = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      group_id: data.group_id?.toString(),
+    };
     try {
-      const result = await addGuest({
-        ...data,
-        group_id: data.group_id?.toString(),
-      });
+      const result =
+        type === "edit"
+          ? await editGuest(guestDetails, guest.id, data.attendance)
+          : await addGuest(guestDetails);
 
       if (result.success) {
         toast.success(result.message);
         onSuccess(false);
       } else if (result.error) {
-        toast.error(result.error);
+        toast.error(
+          result.error,
+          result.message ? { description: result.message } : undefined,
+        );
       }
     } catch (error) {
-      toast.error("Failed to add guest", {
+      toast.error(`Failed to ${type === "edit" ? "update" : "add"} guest`, {
         description: "Please try again or contact us for assistance.",
       });
-      console.error("Name verification error:", error);
-    }
-  };
-
-  const handleEditGuest = async (data: UpsertGuestFormData) => {
-    try {
-      const result = await editGuest(
-        {
-          ...data,
-          group_id: data.group_id?.toString(),
-        },
-        guest.id,
-      );
-
-      if (result.success) {
-        toast.success(result.message);
-        onSuccess(false);
-      } else if (result.error) {
-        toast.error(result.error);
-      }
-    } catch (error) {
-      toast.error("Failed to add guest", {
-        description: "Please try again or contact us for assistance.",
-      });
-      console.error("Name verification error:", error);
+      console.error("Operation error:", error);
     }
   };
 
   return (
     <div className="">
       <Form {...form}>
-        <form
-          onSubmit={
-            type === "edit"
-              ? form.handleSubmit(handleEditGuest)
-              : form.handleSubmit(handleAddGuest)
-          }
-          className="space-y-4 sm:space-y-6"
-        >
+        <form className="space-y-4 sm:space-y-6">
           <FormField
             control={form.control}
             name="first_name"
@@ -174,8 +154,63 @@ const UpsertGuestForm = ({
             )}
           />
 
+          {type === "edit" && (
+            <FormField
+              control={form.control}
+              name="attendance"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
+                    Attendance
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+                      disabled={isSubmitting}
+                    >
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <RadioGroupItem
+                          value="attending"
+                          id="attending"
+                          className="border-[#212122] text-[#212122]"
+                        />
+                        <Label
+                          htmlFor="attending"
+                          className="font-medium cursor-pointer flex items-center gap-2 text-sm sm:text-base"
+                        >
+                          Yes, I&apos;ll be there!
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <RadioGroupItem
+                          value="not-attending"
+                          id="not-attending"
+                          className="border-[#212122] text-[#212122]"
+                        />
+                        <Label
+                          htmlFor="not-attending"
+                          className="font-medium cursor-pointer flex items-center gap-2 text-sm sm:text-base"
+                        >
+                          No, I can&apos;t make it
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage className="text-red-500 text-xs sm:text-sm" />
+                </FormItem>
+              )}
+            />
+          )}
+
           <Button
-            type="submit"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSubmit(form.getValues());
+            }}
             className="w-full bg-[#212122] hover:bg-[#212122]/90 text-base sm:text-lg py-5 sm:py-6 group relative overflow-hidden text-background"
             disabled={isSubmitting}
           >

@@ -49,7 +49,7 @@ export default function AdminDashboard({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("all");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const tabsContentRef = useRef<HTMLDivElement>(null);
@@ -59,7 +59,7 @@ export default function AdminDashboard({
   useEffect(() => {
     const storedAuth = localStorage.getItem("wedding_admin_authenticated");
     if (storedAuth === "true") {
-      setIsAuthenticated(true);
+      setIsAuthorized(true);
     }
   }, []);
 
@@ -91,7 +91,7 @@ export default function AdminDashboard({
     e.preventDefault();
 
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
+      setIsAuthorized(true);
       setError("");
       localStorage.setItem("wedding_admin_authenticated", "true");
     } else {
@@ -101,7 +101,7 @@ export default function AdminDashboard({
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    setIsAuthorized(false);
     localStorage.removeItem("wedding_admin_authenticated");
     setPassword("");
     toast.success("Logged out successfully");
@@ -253,7 +253,7 @@ export default function AdminDashboard({
     (g) => g.attendance !== "attending" && g.attendance !== "not-attending",
   );
 
-  if (!isAuthenticated) {
+  if (!isAuthorized) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="max-w-md w-full">
@@ -265,7 +265,7 @@ export default function AdminDashboard({
               Admin Access
             </h1>
             <p className="text-gray-600">
-              Enter the password to view wedding RSVPs
+              Enter the password to view dashboard
             </p>
           </div>
 
@@ -308,7 +308,7 @@ export default function AdminDashboard({
               <div className="mt-6 pt-6 border-t border-gray-100">
                 <div className="text-center">
                   <p className="text-sm text-gray-500">
-                    Need help? Contact the wedding planner.
+                    Need help? Contact the developer.
                   </p>
                 </div>
               </div>

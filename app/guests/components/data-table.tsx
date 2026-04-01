@@ -39,8 +39,7 @@ import {
   Search,
   UserPlus,
 } from "lucide-react";
-import AddGuestForm, { UpsertGuestFormData } from "@/components/guest-form";
-import { Guest } from "./admin-dashboard";
+import AddGuestForm from "@/components/guest-form";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
