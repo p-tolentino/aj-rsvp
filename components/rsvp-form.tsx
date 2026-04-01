@@ -693,7 +693,7 @@ export default function MultiStepRSVPForm() {
                     />
 
                     {/* About you */}
-                    {attendance === "attending" && (
+                    {attendance !== "not-attending" && (
                       <FormField
                         control={step3Form.control}
                         name="about_me"
