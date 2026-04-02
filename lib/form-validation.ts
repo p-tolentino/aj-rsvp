@@ -13,6 +13,15 @@ export const Step1Schema = z.object({
 
 export type Step1FormData = z.infer<typeof Step1Schema>;
 
+export const GuestDetailsSchema = z.object({
+  guest_id: z.string(),
+  full_name: z.string(),
+  about_me: z.string().min(1, "Please share something about this guest"),
+  message: z.string().optional(),
+});
+
+export type GuestDetails = z.infer<typeof GuestDetailsSchema>;
+
 export const Step2Schema = z.object({
   selected_guest_ids: z
     .array(z.string())
@@ -26,8 +35,7 @@ export const Step3Schema = z.object({
   attendance: z.enum(["attending", "not-attending"], {
     message: "Please choose an option.",
   }),
-  about_me: z.string().optional().or(z.literal("")),
-  message: z.string().optional().or(z.literal("")),
+  guest_details: z.array(GuestDetailsSchema),
 });
 
 export type Step3FormData = z.infer<typeof Step3Schema>;

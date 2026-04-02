@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import {
@@ -34,8 +34,10 @@ import {
   User,
   Users,
   Mail,
+  UserPlus,
 } from "lucide-react";
 import {
+  GuestDetails,
   Step1FormData,
   Step1Schema,
   Step2FormData,
@@ -94,8 +96,13 @@ export default function MultiStepRSVPForm() {
     defaultValues: {
       email: "",
       attendance: undefined,
-      message: "",
+      guest_details: [],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: step3Form.control,
+    name: "guest_details",
   });
 
   const attendance = step3Form.watch("attendance");
@@ -141,7 +148,7 @@ export default function MultiStepRSVPForm() {
             setIsSubmitting(false);
             return;
           }
-
+          initializeGuestDetails([result.guest]);
           setCurrentStep(3);
         }
 
@@ -167,9 +174,29 @@ export default function MultiStepRSVPForm() {
     }
   };
 
+  // Initialize guest details for selected guests
+  const initializeGuestDetails = (guests: GuestInfo[]) => {
+    const guestDetails: GuestDetails[] = guests.map((guest) => ({
+      guest_id: guest.id,
+      full_name: guest.full_name,
+      about_me: "",
+      message: "",
+    }));
+
+    step3Form.setValue("guest_details", guestDetails);
+  };
+
   // Step 2: Guest Selection
   const handleStep2Submit = (data: Step2FormData) => {
     setStep2Data(data);
+
+    // Get the selected guests from availableGuests
+    const selectedGuests = availableGuests.filter((guest) =>
+      data.selected_guest_ids.includes(guest.id),
+    );
+
+    // Initialize guest details for selected guests
+    initializeGuestDetails(selectedGuests);
     setCurrentStep(3);
   };
 
@@ -187,8 +214,7 @@ export default function MultiStepRSVPForm() {
         last_name: step1Data.last_name,
         email: data.email,
         attendance: data.attendance,
-        about_me: data.about_me || null,
-        message: data.message || null,
+        guest_details: data.guest_details,
         guest_list_id: verifiedGuest?.id || "",
         selected_guest_ids: step2Data?.selected_guest_ids || [],
         is_verified_guest: !!verifiedGuest,
@@ -669,7 +695,10 @@ export default function MultiStepRSVPForm() {
                                   htmlFor="attending"
                                   className="font-medium cursor-pointer flex items-center gap-2 text-sm sm:text-base"
                                 >
-                                  Yes, I&apos;ll be there!
+                                  Yes,{" "}
+                                  {fields.length > 1
+                                    ? "we'll be there!"
+                                    : "I'll be there!"}
                                 </Label>
                               </div>
                               <div className="flex items-center space-x-2 sm:space-x-3">
@@ -682,7 +711,10 @@ export default function MultiStepRSVPForm() {
                                   htmlFor="not-attending"
                                   className="font-medium cursor-pointer flex items-center gap-2 text-sm sm:text-base"
                                 >
-                                  No, I can&apos;t make it
+                                  No,{" "}
+                                  {fields.length > 1
+                                    ? "we can't make it"
+                                    : "I can't make it"}
                                 </Label>
                               </div>
                             </RadioGroup>
@@ -692,57 +724,95 @@ export default function MultiStepRSVPForm() {
                       )}
                     />
 
-                    {/* About you */}
-                    {attendance !== "not-attending" && (
-                      <FormField
-                        control={step3Form.control}
-                        name="about_me"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
-                              About you <span className="text-red-500"> *</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder={`Kindly share something unique, interesting, or little-known about yourself—perhaps a fun fact, a hidden talent, or something not many people know about you.`}
-                                className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
-                                {...field}
-                                disabled={isSubmitting}
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    )}
+                    {/* Guest Details Section */}
+                    {attendance !== "not-attending" && fields.length > 0 && (
+                      <div className="space-y-6">
+                        <div className="border-t pt-4">
+                          <h3 className="text-lg font-semibold text-[#212122] mb-4 flex items-center gap-2">
+                            <UserPlus className="h-5 w-5" />
+                            Guest Details
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-4">
+                            Please tell us something unique about each guest.
+                          </p>
+                        </div>
 
-                    {/* Message */}
-                    <FormField
-                      control={step3Form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
-                            Message for the Couple
-                            <span className="italic text-gray-400">
-                              {" "}
-                              (Optional)
-                            </span>
-                          </FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder={`Kindly share a special memory you’ve had with either one of us, or together with both of us....`}
-                              className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
-                              {...field}
-                              disabled={isSubmitting}
-                              value={field.value || ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        {fields.map((field, index) => {
+                          const guestFullName = step3Form.watch(
+                            `guest_details.${index}.full_name`,
+                          );
+
+                          return (
+                            <div
+                              key={field.id}
+                              className="border border-gray-200 rounded-lg p-4 space-y-4 bg-gray-50/30"
+                            >
+                              <div className="flex items-center gap-2 border-b pb-2">
+                                <User className="h-4 w-4 text-[#212122]" />
+                                <h4 className="font-medium text-[#212122]">
+                                  {guestFullName}
+                                </h4>
+                                {fields.length > 1 && (
+                                  <span className="text-xs text-gray-500 ml-auto">
+                                    Guest {index + 1} of {fields.length}
+                                  </span>
+                                )}
+                              </div>
+
+                              <FormField
+                                control={step3Form.control}
+                                name={`guest_details.${index}.about_me`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
+                                      About {guestFullName.split(" ")[0]}{" "}
+                                      <span className="text-red-500">*</span>
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder={`Share something unique, interesting, or little-known about ${guestFullName}—perhaps a fun fact, a hidden talent, or something not many people know.`}
+                                        className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
+                                        {...field}
+                                        disabled={isSubmitting}
+                                        value={field.value || ""}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={step3Form.control}
+                                name={`guest_details.${index}.message`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
+                                      Message for the Couple from{" "}
+                                      {guestFullName.split(" ")[0]}
+                                      <span className="italic text-gray-400">
+                                        {" "}
+                                        (Optional)
+                                      </span>
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder={`Share a special memory or message from ${guestFullName} for the couple...`}
+                                        className="border-[#212122]/20 focus:border-[#212122] min-h-[80px] sm:min-h-[100px] resize-none text-sm sm:text-base"
+                                        {...field}
+                                        disabled={isSubmitting}
+                                        value={field.value || ""}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
 
                     <div className="bg-card-gradient p-3 sm:p-4 md:p-6 rounded-lg border border-[#212122]/20">
                       <p className="text-xs sm:text-sm md:text-base text-gray-600">

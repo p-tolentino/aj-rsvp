@@ -83,8 +83,12 @@ type SubmitRSVPData = {
   last_name: string;
   email: string;
   attendance: "attending" | "not-attending";
-  about_me: string | null;
-  message: string | null;
+  guest_details: Array<{
+    guest_id: string;
+    full_name: string;
+    about_me: string;
+    message?: string;
+  }>;
   guest_list_id: string;
   selected_guest_ids: string[];
   is_verified_guest: boolean;
@@ -106,10 +110,12 @@ export async function submitCompleteRSVP(
     // If guest is verified and has selected multiple guests, create multiple RSVPs
     if (data.is_verified_guest && data.selected_guest_ids.length > 0) {
       // First, fetch the actual guest details for each selected guest
+      const guestIds = data.guest_details.map((g) => g.guest_id);
+
       const { data: selectedGuests, error: fetchError } = await supabase
         .from("guest_list")
         .select("*")
-        .in("id", data.selected_guest_ids);
+        .in("id", guestIds);
 
       if (fetchError || !selectedGuests) {
         console.error("Error fetching selected guests:", fetchError);
@@ -120,22 +126,29 @@ export async function submitCompleteRSVP(
         };
       }
 
-      // Create an RSVP for each selected guest
-      const rsvps: InsertRSVP[] = selectedGuests.map((guest) => ({
-        guest_list_id: guest.id,
-        first_name: guest.first_name,
-        last_name: guest.last_name,
-        full_name: guest.full_name,
-        email: data.email,
-        attendance: data.attendance,
-        about_me: data.about_me,
-        message: data.message,
-        rsvp_for_guest_id: guest.id,
-        submitted_by_guest_id: data.submitter_guest_id, // Track who submitted
-        is_verified_guest: true,
-      }));
+      // Map the form data to the actual guest records
+      const rsvps = selectedGuests.map((guest) => {
+        // Find the corresponding guest details from the form data
+        const guestDetail = data.guest_details.find(
+          (g) => g.guest_id === guest.id,
+        );
 
-      // Check for duplicates
+        return {
+          guest_list_id: guest.id,
+          first_name: guest.first_name,
+          last_name: guest.last_name,
+          full_name: guest.full_name,
+          email: data.email,
+          attendance: data.attendance,
+          about_me: guestDetail?.about_me || null,
+          message: guestDetail?.message || null,
+          rsvp_for_guest_id: guest.id,
+          submitted_by_guest_id: data.submitter_guest_id,
+          is_verified_guest: true,
+        };
+      });
+
+      // Check for duplicates for each guest
       for (const rsvp of rsvps) {
         const { data: existing } = await supabase
           .from("rsvps")
@@ -147,7 +160,7 @@ export async function submitCompleteRSVP(
           return {
             success: false,
             error: "DUPLICATE",
-            message: "An RSVP already exists for one or more selected guests.",
+            message: `An RSVP already exists for ${rsvp.full_name}.`,
           };
         }
       }
@@ -187,25 +200,25 @@ export async function submitCompleteRSVP(
         full_name: verifiedGuest.full_name,
         email: data.email,
         attendance: data.attendance,
-        about_me: data.about_me,
-        message: data.message,
-        rsvp_for_guest_id: data.submitter_guest_id,
-        submitted_by_guest_id: data.submitter_guest_id,
+        about_me: data.guest_details[0]?.about_me || null,
+        message: data.guest_details[0]?.message || null,
+        rsvp_for_guest_id: data.submitter_guest_id || data.guest_list_id,
+        submitted_by_guest_id: data.submitter_guest_id || data.guest_list_id,
         is_verified_guest: true,
       };
 
-      // Check for duplicate by email
+      // Check for duplicate
       const { data: existing } = await supabase
         .from("rsvps")
         .select("id")
-        .eq("email", data.email)
+        .eq("guest_list_id", data.guest_list_id)
         .single();
 
       if (existing) {
         return {
           success: false,
           error: "DUPLICATE",
-          message: "An RSVP with this email already exists.",
+          message: "An RSVP for this guest already exists.",
         };
       }
 
@@ -452,7 +465,7 @@ export async function editGuest(
     return { error: "Failed to edit guest" };
   }
 
-  if (attendance === 'attending' || attendance === 'not-attending') {
+  if (attendance === "attending" || attendance === "not-attending") {
     const { data: verifiedGuest, error: fetchError } = await supabase
       .from("guest_list")
       .select("*")

@@ -14,7 +14,8 @@ const Admin = async () => {
   // Fetch guest list
   const { data: guestList, error: guestError } = await supabase
     .from("guest_list")
-    .select("*");
+    .select("*")
+    .order("created_at", { ascending: true });
 
   if (guestError) throw guestError;
 

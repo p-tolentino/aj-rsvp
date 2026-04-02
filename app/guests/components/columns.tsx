@@ -370,6 +370,10 @@ function DialogCell({
     return <span className="text-[#383539]/50 italic">No message</span>;
   }
 
+  if (type === "about_guest" && !text) {
+    return <span className="text-[#383539]/50 italic">No fun fact</span>;
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
