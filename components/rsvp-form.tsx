@@ -770,14 +770,14 @@ export default function MultiStepRSVPForm() {
                                     </FormLabel>
                                     <FormControl>
                                       <Textarea
-                                        placeholder={`Share something unique, interesting, or little-known about ${guestFullName}—perhaps a fun fact, a hidden talent, or something not many people know.`}
+                                        placeholder={`Share something unique, interesting, or little-known about ${guestFullName.split(" ")[0]}—perhaps a fun fact, a hidden talent, or something not many people know.`}
                                         className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
                                         {...field}
                                         disabled={isSubmitting}
                                         value={field.value || ""}
                                       />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="text-red-600" />
                                   </FormItem>
                                 )}
                               />
