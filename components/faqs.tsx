@@ -53,7 +53,7 @@ export default function FAQs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="text-8xl xl:text-9xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious"
+            className="text-7xl xl:text-8xl 2xl:text-[180px] drop-shadow-md font-beautifully-delicious"
           >
             <span className="block">Frequently</span>
             <span className="block -mt-2 sm:-mt-3 md:-mt-4 lg:-mt-6 xl:-mt-8 2xl:-mt-12">

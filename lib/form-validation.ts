@@ -37,14 +37,14 @@ export const GuestDetailsSchema = z.object({
   full_name: z.string(),
   about_me: z
     .string()
-    .min(1, "Please share something about this guest")
+    .min(1, "Help us get to know you better!")
     .refine((val) => val.trim().length > 0, {
       message:
-        "Please share something about this guest (cannot be empty or just spaces)",
+        "Please share something about this guest (cannot be empty or just spaces).",
     })
     .refine((val) => val.trim().length >= 10, {
       message:
-        "Please provide more detail (minimum 10 characters, not counting spaces at the beginning or end)",
+        "Please share something about this guest (not counting spaces at the beginning or end).",
     })
     .refine(
       (val) => {
@@ -55,8 +55,7 @@ export const GuestDetailsSchema = z.object({
         return true;
       },
       {
-        message:
-          "Please provide a meaningful response (avoid repeated characters)",
+        message: "Please avoid repeated characters.",
       },
     ),
   message: z.string().optional(),
