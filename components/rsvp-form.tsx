@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -107,6 +107,39 @@ export default function MultiStepRSVPForm() {
 
   const attendance = step3Form.watch("attendance");
 
+  useEffect(() => {
+    if (attendance === "not-attending" && fields.length > 0) {
+      // Debounce only for not-attending
+      const timer = setTimeout(() => {
+        fields.forEach((_, index) => {
+          const currentValue = step3Form.getValues(
+            `guest_details.${index}.about_me`,
+          );
+          // Only set if it's empty or just whitespace
+          if (!currentValue || currentValue.trim() === "") {
+            step3Form.setValue(
+              `guest_details.${index}.about_me`,
+              "Unable to attend but sending best wishes",
+            );
+          }
+        });
+      }, 300); // Wait for animation to complete
+
+      return () => clearTimeout(timer);
+    } else if (attendance === "attending" && fields.length > 0) {
+      // Immediately clear when switching to attending (no debounce)
+      fields.forEach((_, index) => {
+        const currentValue = step3Form.getValues(
+          `guest_details.${index}.about_me`,
+        );
+        // Only clear if it's the auto-filled value
+        if (currentValue === "Unable to attend but sending best wishes") {
+          step3Form.setValue(`guest_details.${index}.about_me`, "");
+        }
+      });
+    }
+  }, [attendance, fields, step3Form]);
+
   // Step 1: Name Verification
   const handleStep1Submit = async (data: Step1FormData) => {
     setIsSubmitting(true);
@@ -209,12 +242,23 @@ export default function MultiStepRSVPForm() {
         throw new Error("Missing step 1 data");
       }
 
+      // Prepare guest_details based on attendance
+      let preparedGuestDetails = data.guest_details;
+
+      if (data.attendance === "not-attending") {
+        // For non-attending guests, provide a valid about_me text that passes validation
+        preparedGuestDetails = data.guest_details.map((guest) => ({
+          ...guest,
+          about_me: "", // This satisfies the validation
+        }));
+      }
+
       const completeData = {
         first_name: step1Data.first_name,
         last_name: step1Data.last_name,
         email: data.email,
         attendance: data.attendance,
-        guest_details: data.guest_details,
+        guest_details: preparedGuestDetails,
         guest_list_id: verifiedGuest?.id || "",
         selected_guest_ids: step2Data?.selected_guest_ids || [],
         is_verified_guest: !!verifiedGuest,
@@ -725,15 +769,17 @@ export default function MultiStepRSVPForm() {
                     />
 
                     {/* Guest Details Section */}
-                    {attendance !== "not-attending" && fields.length > 0 && (
-                      <div className="space-y-6">
+                    {fields.length > 0 && (
+                      <div className="space-y-6 transition-all duration-300 ease-in-out">
                         <div className="border-t pt-4">
                           <h3 className="text-lg font-semibold text-[#212122] mb-4 flex items-center gap-2">
                             <UserPlus className="h-5 w-5" />
                             Guest Details
                           </h3>
                           <p className="text-sm text-gray-600 mb-4">
-                            Please tell us something unique about each guest.
+                            {attendance === "attending"
+                              ? `Please tell us something unique about ${fields.length === 1 ? "you" : "each guest"}.`
+                              : "Feel free to leave a message for the couple from each guest."}
                           </p>
                         </div>
 
@@ -745,7 +791,7 @@ export default function MultiStepRSVPForm() {
                           return (
                             <div
                               key={field.id}
-                              className="border border-gray-200 rounded-lg p-4 space-y-4 bg-gray-50/30"
+                              className="border border-gray-200 rounded-lg p-4 space-y-4 bg-gray-50/30 transition-all duration-300"
                             >
                               <div className="flex items-center gap-2 border-b pb-2">
                                 <User className="h-4 w-4 text-[#212122]" />
@@ -759,29 +805,39 @@ export default function MultiStepRSVPForm() {
                                 )}
                               </div>
 
-                              <FormField
-                                control={step3Form.control}
-                                name={`guest_details.${index}.about_me`}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
-                                      About {guestFullName.split(" ")[0]}{" "}
-                                      <span className="text-red-500">*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                      <Textarea
-                                        placeholder={`Share something unique, interesting, or little-known about ${guestFullName.split(" ")[0]}—perhaps a fun fact, a hidden talent, or something not many people know.`}
-                                        className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
-                                        {...field}
-                                        disabled={isSubmitting}
-                                        value={field.value || ""}
-                                      />
-                                    </FormControl>
-                                    <FormMessage className="text-red-600" />
-                                  </FormItem>
-                                )}
-                              />
+                              {/* About Me - only shown when attending */}
+                              <div
+                                className={`transition-all duration-300 overflow-hidden ${
+                                  attendance === "attending"
+                                    ? "max-h-[500px] opacity-100 mb-4"
+                                    : "max-h-0 opacity-0 -mb-4"
+                                }`}
+                              >
+                                <FormField
+                                  control={step3Form.control}
+                                  name={`guest_details.${index}.about_me`}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
+                                        About {guestFullName.split(" ")[0]}{" "}
+                                        <span className="text-red-500">*</span>
+                                      </FormLabel>
+                                      <FormControl>
+                                        <Textarea
+                                          placeholder={`Share something unique, interesting, or little-known about ${guestFullName.split(" ")[0]}—perhaps a fun fact, a hidden talent, or something not many people know.`}
+                                          className="border-[#212122]/20 focus:border-[#212122] min-h-[100px] sm:min-h-[120px] resize-none text-sm sm:text-base"
+                                          {...field}
+                                          disabled={isSubmitting}
+                                          value={field.value || ""}
+                                        />
+                                      </FormControl>
+                                      <FormMessage className="text-red-600" />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
 
+                              {/* Message - always shown */}
                               <FormField
                                 control={step3Form.control}
                                 name={`guest_details.${index}.message`}
@@ -790,8 +846,7 @@ export default function MultiStepRSVPForm() {
                                     <FormLabel className="text-[#212122] font-bold text-sm sm:text-base">
                                       Message for the Couple from{" "}
                                       {guestFullName.split(" ")[0]}
-                                      <span className="italic text-gray-400">
-                                        {" "}
+                                      <span className="italic text-gray-400 ml-1">
                                         (Optional)
                                       </span>
                                     </FormLabel>

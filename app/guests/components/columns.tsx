@@ -104,7 +104,7 @@ export const columns: ColumnDef<RSVP>[] = [
           href={`mailto:${email}`}
           className="text-[#383539]/45 hover:underline hover:text-[#383539]/90 transition-all"
         >
-          {email}
+          {email === "ADMIN" ? "--" : email}
         </a>
       ) : (
         <span className="text-[#383539]/45 italic">No email</span>
@@ -207,7 +207,19 @@ export const columns: ColumnDef<RSVP>[] = [
       }
 
       // Walk-in guest (not verified)
-      return <span className="text-sm text-[#383539]/75 italic">Walk-in</span>;
+      return (
+        <>
+          <Badge
+            variant="outline"
+            className="bg-cyan-50 text-cyan-700 border-cyan-200 xl:flex hidden"
+          >
+            RSVP by Admin
+          </Badge>
+          <span className="text-sm text-cyan-700 italic xl:hidden flex">
+            RSVP by Admin
+          </span>
+        </>
+      );
     },
   },
   {
@@ -217,7 +229,11 @@ export const columns: ColumnDef<RSVP>[] = [
       const about_guest = row.getValue("about_me") as string;
       const name = row.getValue("full_name") as string;
 
-      return <DialogCell text={about_guest} name={name} type="about_guest" />;
+      return row.original.attendance === "attending" ? (
+        <DialogCell text={about_guest} name={name} type="about_guest" />
+      ) : (
+        <span className="text-[#383539]/50 italic">—</span>
+      );
     },
   },
   {
