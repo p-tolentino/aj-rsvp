@@ -779,7 +779,7 @@ export default function MultiStepRSVPForm() {
                           <p className="text-sm text-gray-600 mb-4">
                             {attendance === "attending"
                               ? `Please tell us something unique about ${fields.length === 1 ? "you" : "each guest"}.`
-                              : "Feel free to leave a message for the couple from each guest."}
+                              : "Feel free to leave a message for the couple."}
                           </p>
                         </div>
 
