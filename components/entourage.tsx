@@ -159,14 +159,14 @@ export default function Entourage() {
               transition={{ delay: 0.2 }}
               className={`grid gap-4 sm:gap-6 grid-cols-2 sm:grid-cols-2 max-w-2xl mx-auto text-xs sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8`}
             >
-              <div className="flex flex-col text-center sm:text-end justify-center">
+              <div className="flex flex-col text-center justify-center">
                 {pillars[0].names.map((name, idx) => (
                   <p key={idx} className="text-black/90">
                     {name}
                   </p>
                 ))}
               </div>
-              <div className="flex flex-col text-center sm:text-start justify-center">
+              <div className="flex flex-col text-center justify-center">
                 {pillars[1].names.map((name, idx) => (
                   <p key={idx} className="text-black/90">
                     {name}
@@ -244,7 +244,7 @@ export default function Entourage() {
               className={`grid gap-4 sm:gap-6 grid-cols-2 sm:grid-cols-2 max-w-2xl mx-auto text-xs sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8`}
             >
               {/* Ninongs */}
-              <div className="flex flex-col text-center sm:text-end justify-center">
+              <div className="flex flex-col text-center justify-center">
                 {sponsors[0].names.map((name, idx) => (
                   <p key={idx} className="text-black/90">
                     {name}
@@ -252,7 +252,7 @@ export default function Entourage() {
                 ))}
               </div>
               {/* Ninangs */}
-              <div className="flex flex-col text-center sm:text-start justify-center">
+              <div className="flex flex-col text-center justify-center">
                 {sponsors[1].names.map((name, idx) => (
                   <p key={idx} className="text-black/90">
                     {name}
