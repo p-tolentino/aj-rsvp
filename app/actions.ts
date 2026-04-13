@@ -585,3 +585,34 @@ export async function deleteGuest(id: string) {
     message: `Successfully deleted guest.`,
   };
 }
+
+export async function toggleLetterSent(rsvpId: string, currentStatus: boolean) {
+  try {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from("rsvps")
+      .update({
+        letter_sent: !currentStatus,
+        letter_sent_at: !currentStatus ? new Date().toISOString() : null,
+      })
+      .eq("id", rsvpId);
+
+    if (error) throw error;
+
+    revalidatePath("/guests");
+    revalidatePath("/dashboard");
+
+    return {
+      success: true,
+      message: `Letter ${!currentStatus ? "marked as sent" : "marked as not sent"}`,
+      data: data?.[0],
+    };
+  } catch (error) {
+    console.error("Error toggling letter sent status:", error);
+    return {
+      success: false,
+      error: "Failed to update letter sent status",
+    };
+  }
+}

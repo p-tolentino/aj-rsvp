@@ -446,7 +446,7 @@ export default function Entourage() {
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To enfold us with veil to protect our marriage in prayer and
-                    support.
+                    support
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </motion.div>
@@ -509,7 +509,7 @@ export default function Entourage() {
                   className="text-center mb-3 sm:mb-4 max-w-lg"
                 >
                   <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
-                    To entwine us with Cord bound in unity and accountability.
+                    To entwine us with Cord bound in unity and accountability
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </motion.div>
@@ -576,7 +576,7 @@ export default function Entourage() {
                 >
                   <h4 className="text-md sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
                     To enfold us with veil to protect our marriage in prayer and
-                    support.
+                    support
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </motion.div>
@@ -608,7 +608,7 @@ export default function Entourage() {
                   className="text-center mb-3 sm:mb-4"
                 >
                   <h4 className="text-md sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
-                    To entwine us with Cord bound in unity and accountability.
+                    To entwine us with Cord bound in unity and accountability
                   </h4>
                   <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
                 </motion.div>
@@ -703,7 +703,7 @@ export default function Entourage() {
                 className="text-center mb-3 sm:mb-4"
               >
                 <h4 className="text-md sm:text-lg md:text-xl lg:text-2xl font-serif font-semibold text-black mb-2">
-                  To Carry the Symbol of Lifelong Commitment.
+                  To Carry the Symbol of Lifelong Commitment
                 </h4>
                 <div className="w-16 sm:w-20 h-0.5 bg-primary/30 mx-auto rounded-full"></div>
               </motion.div>

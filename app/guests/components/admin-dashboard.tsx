@@ -327,7 +327,7 @@ export default function AdminDashboard({
 
   return (
     <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[85%] mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -344,7 +344,7 @@ export default function AdminDashboard({
             </div>
 
             {/* Buttons */}
-            <div>
+            <div className="">
               <div className="flex flex-col md:flex-row w-full items-center gap-3">
                 <div className="flex w-full justify-center">
                   <input

@@ -14,8 +14,11 @@ import {
   MoreHorizontal,
   Pencil,
   Trash2,
+  Loader2,
+  MailCheck,
+  Send,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +36,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import UpsertGuestForm from "@/components/guest-form";
-import { deleteGuest } from "@/app/actions";
+import { deleteGuest, toggleLetterSent } from "@/app/actions";
 
 import {
   AlertDialog,
@@ -46,6 +49,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<RSVP>[] = [
   {
@@ -108,6 +112,37 @@ export const columns: ColumnDef<RSVP>[] = [
         </a>
       ) : (
         <span className="text-[#383539]/45 italic">No email</span>
+      );
+    },
+  },
+  {
+    accessorKey: "letter_sent",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="group p-0 text-start font-semibold hover:bg-transparent hover:text-[#212122] transition-all"
+        >
+          <Mail className="mr-2 h-4 w-4" />
+          Letter Sent
+          <ArrowUpDown className="ml-2 h-4 w-4 group-hover:scale-110 transition-all" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const rsvpId = row.original.id;
+      const letterSent = row.getValue("letter_sent") as boolean;
+      const guestEmail = row.original.email;
+      const guestName = row.original.full_name;
+
+      return (
+        <LetterSentCheckbox
+          rsvpId={rsvpId}
+          letterSent={letterSent}
+          guestEmail={guestEmail}
+          guestName={guestName}
+        />
       );
     },
   },
@@ -463,5 +498,63 @@ export function EditGuest({ guest }: { guest?: any }) {
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface LetterSentCheckboxProps {
+  rsvpId: string;
+  letterSent: boolean;
+  guestEmail?: string;
+  guestName?: string;
+}
+
+export function LetterSentCheckbox({
+  rsvpId,
+  letterSent,
+  guestEmail,
+  guestName,
+}: LetterSentCheckboxProps) {
+  const [isPending, startTransition] = useTransition();
+  const [checked, setChecked] = useState(letterSent);
+
+  const handleToggle = async () => {
+    startTransition(async () => {
+      const result = await toggleLetterSent(rsvpId, checked);
+
+      if (result.success) {
+        setChecked(!checked);
+        toast.success(
+          `${result.message} for ${guestName || "guest"}${
+            !checked && guestEmail ? ` (${guestEmail})` : ""
+          }`,
+        );
+      } else {
+        toast.error(result.error || "Failed to update status");
+      }
+    });
+  };
+
+  return (
+    <div className="flex items-center justify-center">
+      {isPending ? (
+        <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+      ) : checked ? (
+        <button
+          onClick={handleToggle}
+          className="rounded-full bg-emerald-500/20 p-1.5 text-emerald-500 transition-all hover:bg-emerald-500/30 hover:scale-105"
+          title={`Mark as not sent for ${guestName || "guest"}`}
+        >
+          <MailCheck className="h-5 w-5" />
+        </button>
+      ) : (
+        <button
+          onClick={handleToggle}
+          className="rounded-full bg-transparent p-1.5 text-zinc-400 transition-all hover:border-emerald-500  hover:text-emerald-500 dark:border-zinc-700"
+          title={`Mark as sent for ${guestName || "guest"}`}
+        >
+          <Send className="h-5 w-5" />
+        </button>
+      )}
+    </div>
   );
 }
