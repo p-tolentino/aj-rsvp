@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 
-export const deadline = "April 20, 2026";
+export const deadline = "April 30, 2026";
 
 const faqs = [
   {
