@@ -160,7 +160,7 @@ export default function MultiStepRSVPForm() {
           if (allGuestsRSVPd) {
             toast.error("All RSVPs Already Submitted", {
               description:
-                "All guests in your group have already submitted their RSVPs. If you need to make changes, please contact us.",
+                "All guests in your group have already submitted their RSVPs. If you wish to make any changes to your RSVP, please contact Anne or Jacob directly. Thank you!",
               icon: <AlertTriangle className="h-4 w-4" />,
               duration: 5000,
             });
@@ -174,7 +174,7 @@ export default function MultiStepRSVPForm() {
           if (result.existingRSVPs?.includes(result.guest.id)) {
             toast.error("RSVP Already Submitted", {
               description:
-                "You have already submitted your RSVP. If you need to make changes, please contact us.",
+                "You have already submitted your RSVP. If you wish to make any changes to your RSVP, please contact Anne or Jacob directly. Thank you!",
               icon: <AlertTriangle className="h-4 w-4" />,
               duration: 5000,
             });
