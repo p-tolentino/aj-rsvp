@@ -158,7 +158,7 @@ export default function MultiStepRSVPForm() {
           );
 
           if (allGuestsRSVPd) {
-            toast.error("All RSVPs Already Submitted", {
+            toast.info("All RSVPs Already Submitted", {
               description:
                 "All guests in your group have already submitted their RSVPs. If you wish to make any changes to your RSVP, please contact Anne or Jacob directly. Thank you!",
               icon: <AlertTriangle className="h-4 w-4" />,
@@ -172,7 +172,7 @@ export default function MultiStepRSVPForm() {
           setCurrentStep(2);
         } else {
           if (result.existingRSVPs?.includes(result.guest.id)) {
-            toast.error("RSVP Already Submitted", {
+            toast.info("RSVP Already Submitted", {
               description:
                 "You have already submitted your RSVP. If you wish to make any changes to your RSVP, please contact Anne or Jacob directly. Thank you!",
               icon: <AlertTriangle className="h-4 w-4" />,
@@ -192,7 +192,7 @@ export default function MultiStepRSVPForm() {
       } else {
         setVerifiedGuest(null);
 
-        toast.info("Guest Not Found", {
+        toast.warning("Guest Not Found", {
           description:
             "We couldn't find your name on our guest list. Please contact us if you have any concerns.",
         });
