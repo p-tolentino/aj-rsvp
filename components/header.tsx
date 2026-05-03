@@ -106,7 +106,9 @@ export default function Header() {
 
               <Link href="/#rsvp" className="inline-block">
                 <Button className="bg-[#383539] hover:bg-[#383539]/90 text-white px-4 py-2 transform transition-transform hover:scale-105">
-                  RSVP Now
+                  {process.env.NEXT_PUBLIC_RSVP_CLOSED === "true"
+                    ? "RSVP"
+                    : "RSVP Now"}
                 </Button>
               </Link>
             </nav>

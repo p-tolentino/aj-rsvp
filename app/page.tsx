@@ -9,6 +9,7 @@ import Venues from "@/components/venues";
 import FAQs from "@/components/faqs";
 import LocalGuide from "@/components/local-guide";
 import Registry from "@/components/registry";
+import RSVPClosed from "@/components/rsvp-closed";
 
 export default async function Home() {
   return (
@@ -23,7 +24,11 @@ export default async function Home() {
       <Attire />
       <Registry />
       <PlaylistSection />
-      <RSVPForm />
+      {process.env.NEXT_PUBLIC_RSVP_CLOSED === "true" ? (
+        <RSVPClosed />
+      ) : (
+        <RSVPForm />
+      )}
     </div>
   );
 }
